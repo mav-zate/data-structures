@@ -118,6 +118,6 @@ public class DynamicArray {
     }
 
     private boolean outOfArrayBounds(int idx) {
-        return idx < 0 || idx > actualSize;
+        return idx < 0 || idx >= actualSize;
     }
 }
