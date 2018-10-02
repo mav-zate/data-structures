@@ -42,17 +42,42 @@ public class DynamicArray {
         internalArray = newArray;
     }
 
-    // TODO
     // insert (idx, item) Amortized: O(1), Best case: O(1), Worse Case: O(n)
-//    public void insert(int idx, int item) {
-//
-//    }
+    public void insert(int idx, int item) throws ArrayIndexOutOfBoundsException {
+        if (outOfArrayBounds(idx)) {
+            throw new ArrayIndexOutOfBoundsException("Cannot insert...index outside of array bounds");
+        }
 
-    // TODO
+        if (actualSize + 1 >= maxSize) {
+            growInternalArray();
+        }
+
+
+        int prevVal = item;
+        int current;
+        for (int i = idx; i < actualSize + 1; i++) {
+            current = internalArray[i];
+            internalArray[i] = prevVal;
+            prevVal = current;
+        }
+        actualSize++;
+    }
+
     // delete (idx)
-//    public int delete(int idx) {
-//
-//    }
+    public int delete(int idx) throws ArrayIndexOutOfBoundsException {
+        if (outOfArrayBounds(idx)) {
+            throw new ArrayIndexOutOfBoundsException("Cannot delete...index outside of array bounds");
+        }
+
+        int deletedValue = internalArray[idx];
+        internalArray[idx] = 0;
+        for (int i = idx + 1; i < actualSize; i++) {
+            internalArray[i - 1] = internalArray[i];
+        }
+        actualSize--;
+
+        return deletedValue;
+    }
 
 
     /**
@@ -62,7 +87,7 @@ public class DynamicArray {
      * @throws ArrayIndexOutOfBoundsException
      */
     public int get(int idx) throws ArrayIndexOutOfBoundsException {
-        if (idx < 0 || idx >= internalArray.length) {
+        if (outOfArrayBounds(idx)) {
             throw new ArrayIndexOutOfBoundsException("Array does not contain index: " + idx);
         }
 
@@ -80,5 +105,9 @@ public class DynamicArray {
      */
     public int size() {
         return actualSize;
+    }
+
+    private boolean outOfArrayBounds(int idx) {
+        return idx < 0 || idx > actualSize;
     }
 }
