@@ -41,7 +41,7 @@ public class DynamicArray {
    * @throws ArrayIndexOutOfBoundsException
    */
   public void insert(int idx, int item) throws ArrayIndexOutOfBoundsException {
-    if (outOfArrayBounds(idx)) {
+    if (idx < 0 || idx > actualSize) {
       throw new ArrayIndexOutOfBoundsException("Cannot insert...index outside of array bounds");
     }
 
@@ -70,7 +70,7 @@ public class DynamicArray {
       growInternalArray();
     }
 
-    internalArray[actualSize++] = item;
+    insert(actualSize, item);
   }
 
   /**
