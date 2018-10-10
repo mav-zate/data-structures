@@ -49,7 +49,6 @@ public class DynamicArray {
       growInternalArray();
     }
 
-
     int prevVal = item;
     int current;
     for (int i = idx; i < actualSize + 1; i++) {
@@ -66,10 +65,6 @@ public class DynamicArray {
    * @param item
    */
   public void add(int item) {
-    if (actualSize >= maxSize) {
-      growInternalArray();
-    }
-
     insert(actualSize, item);
   }
 
@@ -119,7 +114,7 @@ public class DynamicArray {
     int[] newArray = new int[2 * maxSize];
     maxSize *= 2;
 
-    for (int i = actualSize - 1; i > 0; i--) {
+    for (int i = actualSize - 1; i > -1; i--) {
       newArray[i] = internalArray[i];
     }
 
@@ -128,5 +123,17 @@ public class DynamicArray {
 
   private boolean outOfArrayBounds(int idx) {
     return idx < 0 || idx >= actualSize;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append("DynamicArray: [");
+    for (int i = 0; i < actualSize; i++) {
+      sb.append(internalArray[i] + ", ");
+    }
+    sb.append("]");
+    return sb.toString();
   }
 }
