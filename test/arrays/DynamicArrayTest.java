@@ -10,18 +10,21 @@ public class DynamicArrayTest {
 
   DynamicArray array;
 
+  void init() {
+    try {
+      array = new DynamicArray(1);
+    } catch (Exception e) {
+      // Throws exception for negative size
+    }
+    array.add(1);
+  }
+
   @Nested
   @DisplayName("When empty")
   class EmptyDynamicArray {
-
     @BeforeEach
     void init() {
-      try {
-        array = new DynamicArray(1);
-      } catch (Exception e) {
-        // Throws exception for negative size
-      }
-      array.add(1);
+      DynamicArrayTest.this.init();
       array.delete(0);
     }
 
@@ -62,6 +65,35 @@ public class DynamicArrayTest {
   @Nested
   @DisplayName("When at capacity")
   class DynamicArrayAtCapacity {
+    @BeforeEach
+    void init() {
+      DynamicArrayTest.this.init();
+    }
 
+    @Test
+    @DisplayName("::insert grows internal array")
+    void insertTest() {
+      Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> array.get(1));
+
+      array.insert(0, 10);
+
+      Assertions.assertAll(() -> {
+        Assertions.assertEquals(10, array.get(0));
+        Assertions.assertEquals(1, array.get(1));
+      });
+    }
+
+    @Test
+    @DisplayName("::add grows internal array")
+    void addTest() {
+      Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> array.get(1));
+
+      array.add(10);
+
+      Assertions.assertAll(() -> {
+        Assertions.assertEquals(1, array.get(0));
+        Assertions.assertEquals(10, array.get(1));
+      });
+    }
   }
 }
