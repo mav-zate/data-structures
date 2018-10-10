@@ -3,8 +3,8 @@ package arrays;
 /**
  * Implementation of dynamic array backed by a static array
  */
-public class DynamicArray {
-  private int[] internalArray;
+public class DynamicArray<T> {
+  private Object[] internalArray;
   private int actualSize;
   private int maxSize;
 
@@ -13,7 +13,7 @@ public class DynamicArray {
       throw new Exception("Array cannot have negative length");
     }
 
-    internalArray = new int[size];
+    internalArray = new Object[size];
     maxSize = size;
     actualSize = 0;
   }
@@ -25,12 +25,13 @@ public class DynamicArray {
    * @return
    * @throws ArrayIndexOutOfBoundsException
    */
-  public int get(int idx) throws ArrayIndexOutOfBoundsException {
+  @SuppressWarnings("unchecked")
+  public T get(int idx) throws ArrayIndexOutOfBoundsException {
     if (outOfArrayBounds(idx)) {
       throw new ArrayIndexOutOfBoundsException("Array does not contain index: " + idx);
     }
 
-    return internalArray[idx];
+    return (T) internalArray[idx];
   }
 
   /**
@@ -40,7 +41,8 @@ public class DynamicArray {
    * @param item
    * @throws ArrayIndexOutOfBoundsException
    */
-  public void insert(int idx, int item) throws ArrayIndexOutOfBoundsException {
+  @SuppressWarnings("unchecked")
+  public void insert(int idx, T item) throws ArrayIndexOutOfBoundsException {
     if (idx < 0 || idx > actualSize) {
       throw new ArrayIndexOutOfBoundsException("Cannot insert...index outside of array bounds");
     }
@@ -49,10 +51,10 @@ public class DynamicArray {
       growInternalArray();
     }
 
-    int prevVal = item;
-    int current;
+    T prevVal = item;
+    T current;
     for (int i = idx; i < actualSize + 1; i++) {
-      current = internalArray[i];
+      current = (T) internalArray[i];
       internalArray[i] = prevVal;
       prevVal = current;
     }
@@ -64,7 +66,7 @@ public class DynamicArray {
    *
    * @param item
    */
-  public void add(int item) {
+  public void add(T item) {
     insert(actualSize, item);
   }
 
@@ -75,12 +77,13 @@ public class DynamicArray {
    * @return
    * @throws ArrayIndexOutOfBoundsException
    */
-  public int delete(int idx) throws ArrayIndexOutOfBoundsException {
+  @SuppressWarnings("unchecked")
+  public T delete(int idx) throws ArrayIndexOutOfBoundsException {
     if (outOfArrayBounds(idx)) {
       throw new ArrayIndexOutOfBoundsException("Cannot delete...index outside of array bounds");
     }
 
-    int deletedValue = internalArray[idx];
+    T deletedValue = (T) internalArray[idx];
     internalArray[idx] = 0;
     for (int i = idx + 1; i < actualSize; i++) {
       internalArray[i - 1] = internalArray[i];
@@ -111,7 +114,7 @@ public class DynamicArray {
   }
 
   private void growInternalArray() {
-    int[] newArray = new int[2 * maxSize];
+    Object[] newArray = new Object[2 * maxSize];
     maxSize *= 2;
 
     for (int i = actualSize - 1; i > -1; i--) {

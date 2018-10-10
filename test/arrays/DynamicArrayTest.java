@@ -8,11 +8,11 @@ import org.junit.jupiter.api.*;
  */
 public class DynamicArrayTest {
 
-  DynamicArray array;
+  DynamicArray<Integer> array;
 
   void init() {
     try {
-      array = new DynamicArray(1);
+      array = new DynamicArray<>(1);
     } catch (Exception e) {
       // Throws exception for negative size
     }
@@ -38,14 +38,14 @@ public class DynamicArrayTest {
     @DisplayName("::insert in bounds works")
     void insertTest() {
       array.insert(0, 10);
-      Assertions.assertEquals(10, array.get(0));
+      Assertions.assertEquals(10, (Object) array.get(0));
     }
 
     @Test
     @DisplayName("::add works")
     void addTest() {
       array.add(10);
-      Assertions.assertEquals(10, array.get(0));
+      Assertions.assertEquals(10, (Object) array.get(0));
     }
 
     @Test
@@ -78,8 +78,8 @@ public class DynamicArrayTest {
       array.insert(0, 10);
 
       Assertions.assertAll(() -> {
-        Assertions.assertEquals(10, array.get(0));
-        Assertions.assertEquals(1, array.get(1));
+        Assertions.assertEquals(10, (Object) array.get(0));
+        Assertions.assertEquals(1, (Object) array.get(1));
       });
     }
 
@@ -91,8 +91,8 @@ public class DynamicArrayTest {
       array.add(10);
 
       Assertions.assertAll(() -> {
-        Assertions.assertEquals(1, array.get(0));
-        Assertions.assertEquals(10, array.get(1));
+        Assertions.assertEquals(1, (Object) array.get(0));
+        Assertions.assertEquals(10, (Object) array.get(1));
       });
     }
   }
