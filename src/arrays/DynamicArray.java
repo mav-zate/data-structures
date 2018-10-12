@@ -3,7 +3,7 @@ package arrays;
 /**
  * Implementation of dynamic array backed by a static array
  */
-public class DynamicArray<T> {
+public class DynamicArray<T> implements CustomArray<T>, Sortable<T> {
   private Object[] internalArray;
   private int actualSize;
   private int maxSize;
@@ -25,6 +25,7 @@ public class DynamicArray<T> {
    * @return
    * @throws ArrayIndexOutOfBoundsException
    */
+  @Override
   @SuppressWarnings("unchecked")
   public T get(int idx) throws ArrayIndexOutOfBoundsException {
     if (outOfArrayBounds(idx)) {
@@ -41,6 +42,7 @@ public class DynamicArray<T> {
    * @param item
    * @throws ArrayIndexOutOfBoundsException
    */
+  @Override
   @SuppressWarnings("unchecked")
   public void insert(int idx, T item) throws ArrayIndexOutOfBoundsException {
     if (idx < 0 || idx > actualSize) {
@@ -61,6 +63,15 @@ public class DynamicArray<T> {
     actualSize++;
   }
 
+  @Override
+  public void set(int idx, T item) throws ArrayIndexOutOfBoundsException {
+    if (outOfArrayBounds(idx)) {
+      throw new ArrayIndexOutOfBoundsException();
+    }
+
+    internalArray[idx] = item;
+  }
+
   /**
    * Amortized: O(1), Best Case: O(1), Worst Case: O(n)
    *
@@ -78,6 +89,7 @@ public class DynamicArray<T> {
    * @throws ArrayIndexOutOfBoundsException
    */
   @SuppressWarnings("unchecked")
+  @Override
   public T delete(int idx) throws ArrayIndexOutOfBoundsException {
     if (outOfArrayBounds(idx)) {
       throw new ArrayIndexOutOfBoundsException("Cannot delete...index outside of array bounds");
@@ -90,12 +102,15 @@ public class DynamicArray<T> {
     }
     actualSize--;
 
+    // TODO: shift values right of deletion left one
+
     return deletedValue;
   }
 
   /**
    * T: O(n)
    */
+  @Override
   public void deleteAll() {
     for (int i = actualSize - 1; i > 0; i--) {
       internalArray[i] = 0;
