@@ -23,16 +23,22 @@ public class BubbleSort<T extends Comparable<T>> implements Sorter<T> {
 
     int length = array.size();
     while (notSorted) {
+      boolean noSwap = true;
+
       for (int idx = 0; idx < length - 1; idx++) {
         T left = array.get(idx);
         T right = array.get(idx + 1);
         if (comparator.isSwap(left, right)) {
           array.set(idx, right);
           array.set(idx + 1, left);
+          noSwap = false;
         }
       }
-
       length--;
+
+      if (noSwap) {
+        notSorted = false;
+      }
     }
   }
 }
