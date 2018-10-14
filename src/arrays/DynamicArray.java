@@ -3,7 +3,7 @@ package arrays;
 /**
  * Implementation of dynamic array backed by a static array
  */
-public class DynamicArray<T> implements CustomArray<T>, Sortable<T> {
+public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, Sortable<T> {
   private Object[] internalArray;
   private int actualSize;
   private int maxSize;
@@ -143,6 +143,7 @@ public class DynamicArray<T> implements CustomArray<T>, Sortable<T> {
     return idx < 0 || idx >= actualSize;
   }
 
+  // TODO: polish string method
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -153,5 +154,23 @@ public class DynamicArray<T> implements CustomArray<T>, Sortable<T> {
     }
     sb.append("]");
     return sb.toString();
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof DynamicArray)) {
+      return false;
+    }
+
+    DynamicArray<T> that = (DynamicArray) other;
+    for (int i = 0; i < actualSize; i++) {
+      T thisItem = (T) internalArray[i];
+      T thatItem = that.get(i);
+      if (!thisItem.equals(thatItem)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
