@@ -85,7 +85,7 @@ public class SinglyLinkedList<T> {
     return false;
   }
 
-  private class Node<T> {
+  class Node<T> {
     private T data;
     private Node<T> next;
 
