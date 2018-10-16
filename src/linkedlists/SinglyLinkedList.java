@@ -134,5 +134,36 @@ public class SinglyLinkedList<T> {
     public void setNext(Node<T> next) {
       this.next = next;
     }
+
+    @Override
+    public boolean equals(Object other) {
+      if (!(other instanceof Node)) {
+        return false;
+      }
+
+      Node<T> otherNode = (Node) other;
+
+      if (getData() != null) {
+        if (!(getData().equals(otherNode.getData()))) {
+          return false;
+        }
+      } else {
+        if (otherNode.getData() != null) {
+          return false;
+        }
+      }
+
+      if (getNext() != null) {
+        if (!(getNext().equals(otherNode.getNext()))) {
+          return false;
+        }
+      } else {
+        if (otherNode.getNext() != null) {
+          return false;
+        }
+      }
+
+      return true;
+    }
   }
 }
