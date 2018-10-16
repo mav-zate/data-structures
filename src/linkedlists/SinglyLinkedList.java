@@ -28,6 +28,10 @@ public class SinglyLinkedList<T> {
    * @return
    */
   public Node<T> get(T data) {
+    if (data == null) {
+      return null;
+    }
+
     Node<T> currentNode = head;
 
     while (currentNode.hasNext()) {
@@ -106,9 +110,6 @@ public class SinglyLinkedList<T> {
     }
 
     Node(T data, Node<T> next) {
-      if (data == null) {
-        throw new NullPointerException();
-      }
       this.data = data;
       this.next = next;
     }
