@@ -56,6 +56,18 @@ public class SinglyLinkedList<T> {
   }
 
   /**
+   * Overloaded method to allow data insert
+   *
+   * @param data
+   */
+  public void insert(T data) {
+    if (data != null) {
+      Node<T> insertNode = new Node(data);
+      insert(insertNode);
+    }
+  }
+
+  /**
    * Deletes given node from list
    *
    * Returns true upon successful deletion, and false otherwise
