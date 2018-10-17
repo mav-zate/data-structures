@@ -48,12 +48,14 @@ public class SinglyLinkedList<T> {
   /**
    * inserts node after head of list
    *
+   * cannot insert null or node with null data
+   *
    * T: O(1)
    *
    * @param insertNode
    */
   public void insert(Node<T> insertNode) {
-    if (insertNode != null) {
+    if (insertNode != null && insertNode.getData() != null) {
       insertNode.setNext(head.getNext());
       head.setNext(insertNode);
     }
@@ -61,6 +63,8 @@ public class SinglyLinkedList<T> {
 
   /**
    * Overloaded method to allow data insert
+   *
+   * cannot insert null
    *
    * @param data
    */
@@ -75,6 +79,8 @@ public class SinglyLinkedList<T> {
    * Deletes given node from list
    *
    * Returns true upon successful deletion, and false otherwise
+   *
+   * T: O(n)
    *
    * @param deleteData
    * @return
@@ -124,7 +130,7 @@ public class SinglyLinkedList<T> {
     }
 
     public boolean hasNext() {
-      return this.next != null;
+      return (this.next != null && this.next.data != null);
     }
 
     public Node<T> getNext() {
