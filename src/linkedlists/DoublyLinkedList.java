@@ -1,5 +1,7 @@
 package linkedlists;
 
+import com.google.common.base.MoreObjects;
+
 public class DoublyLinkedList<T> {
   private Node<T> head;
 
@@ -201,8 +203,15 @@ public class DoublyLinkedList<T> {
 
       // prev
       if (getPrev() != null) {
-        if (!getPrev().equals(otherNode.getPrev())) {
-          return false;
+        T prevData = getPrev().getData();
+        if (prevData != null) {
+          if (!(prevData.equals(otherNode.getPrev().getData()))) {
+            return false;
+          }
+        } else {
+          if (otherNode.getPrev() == null || otherNode.getPrev().getData() != null) {
+            return false;
+          }
         }
       } else {
         if (otherNode.getPrev() != null) {
@@ -212,8 +221,15 @@ public class DoublyLinkedList<T> {
 
       // next
       if (getNext() != null) {
-        if (!getNext().equals(otherNode.getNext())) {
-          return false;
+        T nextData = getNext().getData();
+        if (nextData != null) {
+          if (!(nextData.equals(otherNode.getNext().getData()))) {
+            return false;
+          }
+        } else {
+          if (otherNode.getNext() == null || otherNode.getNext().getData() != null) {
+            return false;
+          }
         }
       } else {
         if (otherNode.getNext() != null) {
@@ -222,6 +238,18 @@ public class DoublyLinkedList<T> {
       }
 
       return true;
+    }
+
+    @Override
+    public String toString() {
+      T prevData = prev == null ? null : prev.getData();
+      T nextData = next == null ? null : next.getData();
+
+      return MoreObjects.toStringHelper(this)
+          .add("data", data)
+          .add("prev", prevData)
+          .add("next", nextData)
+          .toString();
     }
   }
 }
