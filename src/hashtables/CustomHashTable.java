@@ -1,6 +1,13 @@
 package hashtables;
 
-
+/**
+ * Basic implementation of a hash table backed by a static array
+ *
+ * Collisions are resolved by chaining
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class CustomHashTable<K, V> {
   private Entry<K, V>[] table;
   private int size;
