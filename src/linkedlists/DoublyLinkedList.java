@@ -1,13 +1,13 @@
 package linkedlists;
 
-import com.google.common.base.MoreObjects;
+import nodes.DoublyLinkedNode;
 
 public class DoublyLinkedList<T> {
-  private Node<T> head;
+  private DoublyLinkedNode<T> head;
 
   DoublyLinkedList() {
-    head = new Node(null);
-    Node<T> sentinel = new Node(null);
+    head = new DoublyLinkedNode<>(null);
+    DoublyLinkedNode<T> sentinel = new DoublyLinkedNode<>(null);
     head.setNext(sentinel);
     sentinel.setPrev(null);
   }
@@ -32,8 +32,8 @@ public class DoublyLinkedList<T> {
    * @param data
    * @return
    */
-  public Node<T> get(T data) {
-    Node<T> currentNode = head;
+  public DoublyLinkedNode<T> get(T data) {
+    DoublyLinkedNode<T> currentNode = head;
     while (currentNode.hasNext()) {
       currentNode = currentNode.getNext();
       if (currentNode.getData() == data) {
@@ -54,9 +54,9 @@ public class DoublyLinkedList<T> {
    *
    * @param insertNode
    */
-  public void insert(Node<T> insertNode) {
+  public void insert(DoublyLinkedNode<T> insertNode) {
     if (insertNode != null && insertNode.getData() != null) {
-      Node<T> currentFirstNode = head.getNext();
+      DoublyLinkedNode<T> currentFirstNode = head.getNext();
 
       currentFirstNode.setPrev(insertNode);
       insertNode.setNext(currentFirstNode);
@@ -76,7 +76,7 @@ public class DoublyLinkedList<T> {
    */
   public void insert(T data) {
     if (data != null) {
-      Node<T> insertNode = new Node(data);
+      DoublyLinkedNode<T> insertNode = new DoublyLinkedNode<>(data);
       insert(insertNode);
     }
   }
@@ -96,12 +96,12 @@ public class DoublyLinkedList<T> {
       return false;
     }
 
-    Node<T> currentNode = head;
+    DoublyLinkedNode<T> currentNode = head;
     while (currentNode.hasNext()) {
       currentNode = currentNode.getNext();
       if (currentNode.getData() == data) {
-        Node<T> prevNode = currentNode.getPrev();
-        Node<T> nextNode = currentNode.getNext();
+        DoublyLinkedNode<T> prevNode = currentNode.getPrev();
+        DoublyLinkedNode<T> nextNode = currentNode.getNext();
 
         nextNode.setPrev(prevNode);
         prevNode.setNext(nextNode);
@@ -120,12 +120,12 @@ public class DoublyLinkedList<T> {
    * @return
    */
   public boolean delete() {
-    Node<T> currentNode = head;
+    DoublyLinkedNode<T> currentNode = head;
     while (currentNode.hasNext()) {
       currentNode = currentNode.getNext();
 
-      Node<T> prevNode = currentNode.getPrev();
-      Node<T> nextNode = currentNode.getNext();
+      DoublyLinkedNode<T> prevNode = currentNode.getPrev();
+      DoublyLinkedNode<T> nextNode = currentNode.getNext();
 
       nextNode.setPrev(prevNode);
       prevNode.setNext(nextNode);
@@ -133,123 +133,5 @@ public class DoublyLinkedList<T> {
     }
 
     return false;
-  }
-
-  class Node<T> {
-    private T data;
-    private Node<T> prev;
-    private Node<T> next;
-
-    Node(T data) {
-      this(data, null, null);
-    }
-
-    Node(T data, Node<T> prev, Node<T> next) {
-      this.data = data;
-      this.prev = prev;
-      this.next = next;
-    }
-
-    public T getData() {
-      return data;
-    }
-
-    public void setData(T data) {
-      this.data = data;
-    }
-
-    public Node<T> getPrev() {
-      return prev;
-    }
-
-    public void setPrev(Node<T> prev) {
-      this.prev = prev;
-    }
-
-    public boolean hasPrev() {
-      return (getPrev() != null && getPrev().getData() != null);
-    }
-
-    public Node<T> getNext() {
-      return next;
-    }
-
-    public void setNext(Node<T> next) {
-      this.next = next;
-    }
-
-    public boolean hasNext() {
-      return (getNext() != null && getNext().getData() != null);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      if (!(other instanceof Node)) {
-        return false;
-      }
-
-      Node<T> otherNode = (Node<T>) other;
-
-      // data
-      if (getData() != null) {
-        if (!getData().equals(otherNode.getData())) {
-          return false;
-        }
-      } else {
-        if (otherNode.getData() != null) {
-          return false;
-        }
-      }
-
-      // prev
-      if (getPrev() != null) {
-        T prevData = getPrev().getData();
-        if (prevData != null) {
-          if (!(prevData.equals(otherNode.getPrev().getData()))) {
-            return false;
-          }
-        } else {
-          if (otherNode.getPrev() == null || otherNode.getPrev().getData() != null) {
-            return false;
-          }
-        }
-      } else {
-        if (otherNode.getPrev() != null) {
-          return false;
-        }
-      }
-
-      // next
-      if (getNext() != null) {
-        T nextData = getNext().getData();
-        if (nextData != null) {
-          if (!(nextData.equals(otherNode.getNext().getData()))) {
-            return false;
-          }
-        } else {
-          if (otherNode.getNext() == null || otherNode.getNext().getData() != null) {
-            return false;
-          }
-        }
-      } else {
-        if (otherNode.getNext() != null) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-
-    @Override
-    public String toString() {
-      T prevData = prev == null ? null : prev.getData();
-      T nextData = next == null ? null : next.getData();
-
-      return MoreObjects.toStringHelper(this)
-          .add("data", data)
-          .add("prev", prevData)
-          .add("next", nextData)
-          .toString();
-    }
   }
 }

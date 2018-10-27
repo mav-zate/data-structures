@@ -1,5 +1,6 @@
 package linkedlists;
 
+import nodes.DoublyLinkedNode;
 import org.junit.jupiter.api.*;
 
 class DoublyLinkedListTest {
@@ -22,15 +23,15 @@ class DoublyLinkedListTest {
 
     @Test
     public void getTest() {
-      DoublyLinkedList.Node result = linkedList.get(1);
+      DoublyLinkedNode<Integer> result = linkedList.get(1);
       Assertions.assertEquals(null, result);
     }
 
     @Test
     public void insertTest() {
-      DoublyLinkedList.Node insertNode = linkedList.new Node<>(1);
-      DoublyLinkedList.Node head = linkedList.new Node<>(null, null, insertNode);
-      DoublyLinkedList.Node sentinel = linkedList.new Node<>(null, insertNode, null);
+      DoublyLinkedNode<Integer> insertNode = new DoublyLinkedNode<>(1);
+      DoublyLinkedNode<Integer> head = new DoublyLinkedNode<>(null, null, insertNode);
+      DoublyLinkedNode<Integer> sentinel = new DoublyLinkedNode<>(null, insertNode, null);
       linkedList.insert(insertNode);
 
       System.out.println(head);
@@ -75,19 +76,19 @@ class DoublyLinkedListTest {
 
     @Test
     public void getTest() {
-      DoublyLinkedList.Node result = linkedList.get(2);
+      DoublyLinkedNode<Integer> result = linkedList.get(2);
 
-      DoublyLinkedList.Node head = linkedList.new Node<>(null, null, null);
-      DoublyLinkedList.Node sentinel = linkedList.new Node<>(null, null, null);
+      DoublyLinkedNode<Integer> head = new DoublyLinkedNode<>(null, null, null);
+      DoublyLinkedNode<Integer> sentinel = new DoublyLinkedNode<>(null, null, null);
 
-      DoublyLinkedList.Node firstInsert = linkedList.new Node<>(3, result, sentinel);
-      DoublyLinkedList.Node lastInsert = linkedList.new Node<>(1, head, result);
+      DoublyLinkedNode<Integer> firstInsert = new DoublyLinkedNode<>(3, result, sentinel);
+      DoublyLinkedNode<Integer> lastInsert = new DoublyLinkedNode<>(1, head, result);
 
       head.setNext(lastInsert);
       sentinel.setPrev(firstInsert);
 
       Assertions.assertAll(() -> {
-        Assertions.assertEquals(2, result.getData());
+        Assertions.assertEquals(2, (int) result.getData());
         Assertions.assertEquals(lastInsert, result.getPrev());
         Assertions.assertEquals(firstInsert, result.getNext());
       });
@@ -96,12 +97,12 @@ class DoublyLinkedListTest {
     @Test
     @DisplayName("insert preserves order of insert")
     public void insertTest() {
-      DoublyLinkedList.Node head = linkedList.new Node<>(null, null, null);
-      DoublyLinkedList.Node sentinel = linkedList.new Node<>(null, null, null);
+      DoublyLinkedNode<Integer> head = new DoublyLinkedNode<>(null, null, null);
+      DoublyLinkedNode<Integer> sentinel = new DoublyLinkedNode<>(null, null, null);
 
-      DoublyLinkedList.Node firstInsertNode = linkedList.new Node<>(3, null, null);
-      DoublyLinkedList.Node secondInsertNode = linkedList.new Node<>(2, null, null);
-      DoublyLinkedList.Node thirdInsertNode = linkedList.new Node<>(1, null, null);
+      DoublyLinkedNode<Integer> firstInsertNode = new DoublyLinkedNode<>(3, null, null);
+      DoublyLinkedNode<Integer> secondInsertNode = new DoublyLinkedNode<>(2, null, null);
+      DoublyLinkedNode<Integer> thirdInsertNode = new DoublyLinkedNode<>(1, null, null);
 
       head.setNext(thirdInsertNode);
 
@@ -117,9 +118,9 @@ class DoublyLinkedListTest {
       sentinel.setPrev(firstInsertNode);
 
 
-      DoublyLinkedList.Node node1 = linkedList.get(1);
-      DoublyLinkedList.Node node2 = linkedList.get(2);
-      DoublyLinkedList.Node node3 = linkedList.get(3);
+      DoublyLinkedNode<Integer> node1 = linkedList.get(1);
+      DoublyLinkedNode<Integer> node2 = linkedList.get(2);
+      DoublyLinkedNode<Integer> node3 = linkedList.get(3);
 
       Assertions.assertAll(() -> {
         Assertions.assertEquals(thirdInsertNode, node1);
@@ -138,11 +139,11 @@ class DoublyLinkedListTest {
 
     @Test
     public void deleteTest() {
-      DoublyLinkedList.Node head = linkedList.new Node<>(null, null, null);
-      DoublyLinkedList.Node sentinel = linkedList.new Node<>(null, null, null);
+      DoublyLinkedNode<Integer> head = new DoublyLinkedNode<>(null, null, null);
+      DoublyLinkedNode<Integer> sentinel = new DoublyLinkedNode<>(null, null, null);
 
-      DoublyLinkedList.Node firstNodePostDeletion = linkedList.new Node<>(3, null, null);
-      DoublyLinkedList.Node secondNodePostDeletion = linkedList.new Node<>(1, null, null);
+      DoublyLinkedNode<Integer> firstNodePostDeletion = new DoublyLinkedNode<>(3, null, null);
+      DoublyLinkedNode<Integer> secondNodePostDeletion = new DoublyLinkedNode<>(1, null, null);
 
       head.setNext(secondNodePostDeletion);
       secondNodePostDeletion.setPrev(head);

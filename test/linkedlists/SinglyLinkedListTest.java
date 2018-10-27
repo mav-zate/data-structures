@@ -1,5 +1,6 @@
 package linkedlists;
 
+import nodes.SinglyLinkedNode;
 import org.junit.jupiter.api.*;
 
 
@@ -23,13 +24,13 @@ class SinglyLinkedListTest {
 
     @Test
     public void getTest() {
-      SinglyLinkedList.Node result = linkedList.get(1);
+      SinglyLinkedNode result = linkedList.get(1);
       Assertions.assertEquals(null, result);
     }
 
     @Test
     public void insertTest() {
-      SinglyLinkedList.Node insertNode = linkedList.new Node<>(1);
+      SinglyLinkedNode insertNode = new SinglyLinkedNode<>(1);
       linkedList.insert(insertNode);
 
       Assertions.assertEquals(true, linkedList.contains(1));
@@ -65,16 +66,16 @@ class SinglyLinkedListTest {
 
     @Test
     public void getTest() {
-      SinglyLinkedList.Node result = linkedList.get(2);
+      SinglyLinkedNode result = linkedList.get(2);
       Assertions.assertEquals(2, result.getData());
     }
 
     @Test
     @DisplayName("insert preserves order of insert")
     public void insertTest() {
-      SinglyLinkedList.Node firstNode = linkedList.new Node<>(3, null);
-      SinglyLinkedList.Node secondNode = linkedList.new Node<>(2, firstNode);
-      SinglyLinkedList.Node thirdNode = linkedList.new Node<>(1, secondNode);
+      SinglyLinkedNode firstNode = new SinglyLinkedNode<>(3, null);
+      SinglyLinkedNode secondNode = new SinglyLinkedNode<>(2, firstNode);
+      SinglyLinkedNode thirdNode = new SinglyLinkedNode<>(1, secondNode);
 
 
       Assertions.assertAll(() -> {
@@ -86,9 +87,8 @@ class SinglyLinkedListTest {
 
     @Test
     public void deleteTest() {
-      SinglyLinkedList.Node firstNodePostDeletion = linkedList.new Node<>(3, null);
-      SinglyLinkedList.Node secondNodePostDeletion =
-          linkedList.new Node<>(1, firstNodePostDeletion);
+      SinglyLinkedNode firstNodePostDeletion = new SinglyLinkedNode<>(3, null);
+      SinglyLinkedNode secondNodePostDeletion = new SinglyLinkedNode<>(1, firstNodePostDeletion);
 
       boolean gotDeleted = linkedList.delete(2);
       Assertions.assertAll(() -> {

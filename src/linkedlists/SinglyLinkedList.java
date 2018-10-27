@@ -1,10 +1,12 @@
 package linkedlists;
 
+import nodes.SinglyLinkedNode;
+
 public class SinglyLinkedList<T> {
-  private Node<T> head;
+  private SinglyLinkedNode<T> head;
 
   SinglyLinkedList() {
-    head = new Node(null, null);
+    head = new SinglyLinkedNode<>(null, null);
   }
 
   /**
@@ -27,12 +29,12 @@ public class SinglyLinkedList<T> {
    * @param data
    * @return
    */
-  public Node<T> get(T data) {
+  public SinglyLinkedNode<T> get(T data) {
     if (data == null) {
       return null;
     }
 
-    Node<T> currentNode = head;
+    SinglyLinkedNode<T> currentNode = head;
 
     while (currentNode.hasNext()) {
       currentNode = currentNode.getNext();
@@ -54,7 +56,7 @@ public class SinglyLinkedList<T> {
    *
    * @param insertNode
    */
-  public void insert(Node<T> insertNode) {
+  public void insert(SinglyLinkedNode<T> insertNode) {
     if (insertNode != null && insertNode.getData() != null) {
       insertNode.setNext(head.getNext());
       head.setNext(insertNode);
@@ -70,7 +72,7 @@ public class SinglyLinkedList<T> {
    */
   public void insert(T data) {
     if (data != null) {
-      Node<T> insertNode = new Node(data);
+      SinglyLinkedNode<T> insertNode = new SinglyLinkedNode<>(data);
       insert(insertNode);
     }
   }
@@ -90,8 +92,8 @@ public class SinglyLinkedList<T> {
       return false;
     }
 
-    Node<T> prevNode;
-    Node<T> currentNode = head;
+    SinglyLinkedNode<T> prevNode;
+    SinglyLinkedNode<T> currentNode = head;
 
     while (currentNode.hasNext()) {
       prevNode = currentNode;
@@ -105,71 +107,5 @@ public class SinglyLinkedList<T> {
     }
 
     return false;
-  }
-
-  class Node<T> {
-    private T data;
-    private Node<T> next;
-
-    Node(T data) {
-      this(data, null);
-    }
-
-    Node(T data, Node<T> next) {
-      this.data = data;
-      this.next = next;
-    }
-
-
-    public T getData() {
-      return data;
-    }
-
-    public void setData(T data) {
-      this.data = data;
-    }
-
-    public boolean hasNext() {
-      return (this.next != null && this.next.data != null);
-    }
-
-    public Node<T> getNext() {
-      return next;
-    }
-
-    public void setNext(Node<T> next) {
-      this.next = next;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      if (!(other instanceof Node)) {
-        return false;
-      }
-
-      Node<T> otherNode = (Node) other;
-
-      if (getData() != null) {
-        if (!(getData().equals(otherNode.getData()))) {
-          return false;
-        }
-      } else {
-        if (otherNode.getData() != null) {
-          return false;
-        }
-      }
-
-      if (getNext() != null) {
-        if (!(getNext().equals(otherNode.getNext()))) {
-          return false;
-        }
-      } else {
-        if (otherNode.getNext() != null) {
-          return false;
-        }
-      }
-
-      return true;
-    }
   }
 }
