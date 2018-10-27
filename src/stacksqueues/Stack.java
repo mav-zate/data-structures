@@ -3,8 +3,10 @@ package stacksqueues;
 import java.util.EmptyStackException;
 
 /**
- * Stack that grows and shrinks when ({@link #size} >= {@link #capacity}) and
+ * Stack backed by array that grows and shrinks when ({@link #size} >= {@link #capacity}) and
  * ({@link #size} <= {@link #capacity}), respectively
+ *
+ * Push and pop operations could be constant time if backed by singly linked list
  *
  * @param <T>
  */
@@ -25,6 +27,7 @@ public class Stack<T> {
 
   /**
    * Retrieves last inserted item
+   * T: O(1) (amortized)
    *
    * @return
    * @throws EmptyStackException
@@ -43,6 +46,7 @@ public class Stack<T> {
 
   /**
    * Inserts item
+   * T: O(1) (amortized)
    *
    * @param item
    * @throws NullPointerException
