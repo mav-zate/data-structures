@@ -27,8 +27,7 @@ public class BinaryTreeNodeImpl<T extends Comparable<T>> implements BinaryTreeNo
 
   @Override
   public void setLeftChild(T key) {
-    BinaryTreeNodeImpl<T> leftChild = new BinaryTreeNodeImpl<>(key);
-    this.leftChild = leftChild;
+    this.leftChild = (key == null) ? null : new BinaryTreeNodeImpl<>(key);
   }
 
   @Override
@@ -38,7 +37,6 @@ public class BinaryTreeNodeImpl<T extends Comparable<T>> implements BinaryTreeNo
 
   @Override
   public void setRightChild(T key) {
-    BinaryTreeNodeImpl<T> rightChild = new BinaryTreeNodeImpl<>(key);
-    this.rightChild = rightChild;
+    this.rightChild = (key == null) ? null : new BinaryTreeNodeImpl<>(key);
   }
 }
