@@ -1,5 +1,8 @@
 package trees;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+
 /**
  * binary tree such that:
  *     all keys to left of node are less than node
@@ -12,6 +15,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
   private final BinaryTreeNode<T> root;
   private int height = -1;
 
+  /**
+   * BST must be initialized with root node
+   *
+   * @param key
+   */
   public BinarySearchTree(T key) {
     root = new BinaryTreeNodeImpl<>(key);
   }
@@ -58,21 +66,17 @@ public class BinarySearchTree<T extends Comparable<T>> {
   }
 
   /**
-   * Deletes key if found in tree
+   * Deletes key if found in tree (except root)
    *
-   * Throws exception if key is not instance of {@link Comparable}
+   * Throws exception if key is not instance of {@link Comparable} or if key is root node
    *
    * @param key
    * @return
    * @throws IllegalArgumentException
    */
   public boolean delete(T key) throws IllegalArgumentException {
-    if (!(key instanceof Comparable)) {
+    if (!(key instanceof Comparable) || key.compareTo(root.getKey()) == 0) {
       throw new IllegalArgumentException();
-    }
-
-    if (key.compareTo(root.getKey()) == 0) {
-      return true;
     }
 
     boolean deleted = false;
@@ -164,6 +168,33 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return height;
   }
 
+  /**
+   * Returns nodes of tree in logical order
+   *
+   * @return
+   */
+  public List<T> depthFirstInOrder() {
+    return depthFirst(root);
+  }
+
+  private List<T> depthFirst(BinaryTreeNode<T> node) {
+    List<T> allNodes = Lists.newArrayList();
+
+    if (node == null) {
+      return allNodes;
+    } else {
+      allNodes.addAll(depthFirst(node.getLeftChild()));
+      allNodes.add(node.getKey());
+      allNodes.addAll(depthFirst(node.getRightChild()));
+    }
+
+    return allNodes;
+  }
+
+//  public List<T> breadthFirst() {
+//
+//  }
+
   private int subtreeHeight(BinaryTreeNode<T> node) {
     if (node == null) {
       return 0;
@@ -176,5 +207,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     return 1 + Math.max(subtreeHeight(leftChild), subtreeHeight(rightChild));
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("BinarySearchTree: {");
+
+    List<T> keys = depthFirstInOrder();
+    for (T key : keys) {
+      sb.append(key);
+      sb.append(", ");
+    }
+    sb.delete(sb.length() - 2, sb.length());
+    sb.append("}");
+
+    return sb.toString();
   }
 }
