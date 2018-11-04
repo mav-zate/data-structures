@@ -4,6 +4,7 @@ import comparison.AscendingOrder;
 import comparison.DescendingOrder;
 import comparison.SortComparison;
 import org.junit.jupiter.api.*;
+import testutils.ArrayUtils;
 
 import java.util.ArrayList;
 
@@ -17,24 +18,6 @@ class BubbleSortTest {
     bubbleSort = new BubbleSort<>();
   }
 
-  public Sortable<Integer> initInput() throws Exception {
-    DynamicArray actualResult = new DynamicArray<>(10);
-
-    actualResult.add(2);
-    actualResult.add(7);
-    actualResult.add(4);
-    actualResult.add(3);
-    actualResult.add(8);
-
-    actualResult.add(1);
-    actualResult.add(10);
-    actualResult.add(9);
-    actualResult.add(5);
-    actualResult.add(6);
-
-    return actualResult;
-  }
-
   @Nested
   @DisplayName("Ascending Order")
   class AscendingOrderTest {
@@ -45,8 +28,8 @@ class BubbleSortTest {
     @BeforeEach
     void init() throws Exception {
       sortComparison = new AscendingOrder();
-      actualResult = initInput();
-      expectedResult = initExpectedResult();
+      actualResult = ArrayUtils.initUnsortedArray(10);
+      expectedResult = ArrayUtils.initAscendingOrderArray(10);
     }
 
     @Test
@@ -55,15 +38,6 @@ class BubbleSortTest {
       System.out.println(expectedResult);
       bubbleSort.sort(actualResult, sortComparison);
       Assertions.assertEquals(expectedResult, actualResult);
-    }
-
-    Sortable initExpectedResult() throws Exception {
-      DynamicArray expectedResult = new DynamicArray<>(10);
-      for (int i = 1; i < 11; i++) {
-        expectedResult.add(i);
-      }
-
-      return expectedResult;
     }
   }
 
@@ -77,8 +51,8 @@ class BubbleSortTest {
     @BeforeEach
     void init() throws Exception {
       sortComparison = new DescendingOrder();
-      actualResult = initInput();
-      expectedResult = initExpectedResult();
+      actualResult = ArrayUtils.initUnsortedArray(10);
+      expectedResult = ArrayUtils.initDescendingOrderArray(10);
     }
 
     @Test
@@ -86,15 +60,6 @@ class BubbleSortTest {
     void sortTest() {
       bubbleSort.sort(actualResult, sortComparison);
       Assertions.assertEquals(expectedResult, actualResult);
-    }
-
-    Sortable initExpectedResult() throws Exception {
-      DynamicArray expectedResult = new DynamicArray<>(10);
-      for (int i = 10; i > 0; i--) {
-        expectedResult.add(i);
-      }
-
-      return expectedResult;
     }
   }
 }
