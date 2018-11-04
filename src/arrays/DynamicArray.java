@@ -8,7 +8,7 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, So
   private int actualSize;
   private int maxSize;
 
-  DynamicArray(int size) throws Exception {
+  public DynamicArray(int size) throws Exception {
     if (size < 1) {
       throw new Exception("Array cannot have negative length");
     }
