@@ -20,44 +20,52 @@ public class BinarySearchTree<T extends Comparable<T>> {
    *
    * @param key
    */
-  public BinarySearchTree(T key) {
+  public BinarySearchTree(T key) throws NullPointerException {
+    if (key == null) {
+      throw new NullPointerException();
+    }
+
     root = new BinaryTreeNodeImpl<>(key);
   }
 
   /**
-   * Inserts new key into tree. No-op if key is already in tree
+   * Inserts new key into tree unless key is already in tree
+   *
+   * Return true if inserts successfully and false if otherwise
    *
    * Throws exception if key is not instance of {@link Comparable}
    *
    * @param key
    * @throws IllegalArgumentException
    */
-  public void insert(T key) throws IllegalArgumentException {
+  public boolean insert(T key) throws IllegalArgumentException {
     if (!(key instanceof Comparable)) {
       throw new IllegalArgumentException();
     }
 
-    // no duplicates
-    if (key.equals(root.getKey())) {
-      return;
-    }
-
     BinaryTreeNode<T> currentNode = root;
-    boolean insert = false;
-    while (!insert) {
+    while (true) {
       if (key.compareTo(currentNode.getKey()) < 0) {
-        if (currentNode.getLeftChild() != null) {
-          currentNode = currentNode.getLeftChild();
-        } else {
-          currentNode.setLeftChild(key);
-          insert = true;
-        }
-      } else {
-        if (currentNode.getRightChild() != null) {
+        BinaryTreeNode<T> rightChild = currentNode.getRightChild();
+        if (rightChild != null) {
+          if (key.compareTo(rightChild.getKey()) == 0) {
+            return false;
+          }
           currentNode = currentNode.getRightChild();
         } else {
-          currentNode.setRightChild(key);
-          insert = true;
+          currentNode.setRightChild(new AvlTreeNode<>(key));
+          return true;
+        }
+      } else {
+        BinaryTreeNode<T> leftChild = currentNode.getLeftChild();
+        if (leftChild != null) {
+          if (key.compareTo(leftChild.getKey()) == 0) {
+            return false;
+          }
+          currentNode = currentNode.getLeftChild();
+        } else {
+          currentNode.setLeftChild(new AvlTreeNode<>(key));
+          return true;
         }
       }
     }
