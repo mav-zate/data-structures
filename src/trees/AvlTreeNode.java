@@ -63,4 +63,16 @@ public class AvlTreeNode<T extends Comparable<T>> {
     public void setRightChild(AvlTreeNode<T> rightChild) {
       this.rightChild = rightChild;
     }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof AvlTreeNode)) {
+      return false;
+    }
+
+    AvlTreeNode<T> other = (AvlTreeNode<T>) obj;
+
+    // TODO: include rest of the fields
+    return getKey().equals(other.getKey());
+  }
 }
