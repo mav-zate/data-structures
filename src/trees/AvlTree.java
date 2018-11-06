@@ -120,29 +120,88 @@ public class AvlTree<T extends Comparable<T>> {
 
   // TODO: write rebalance
   private void rebalance(AvlTreeNode<T> node) {
+    setBalanceFactor(node);
 
-    // left-left
+    int balanceFactor = node.getBalanceFactor();
+    if (balanceFactor < -1) {
+      AvlTreeNode<T> leftChild = node.getLeftChild();
+      if (height(leftChild.getLeftChild()) >= height(leftChild.getRightChild())) {
+        node = rotateRight(node);
+      } else {
+          // TODO: left then right
+      }
 
-    // right-right
+    } else if (balanceFactor > 1) {
+      AvlTreeNode<T> rightChild = node.getRightChild();
+      if (height(rightChild.getLeftChild()) <= height(rightChild.getRightChild())) {
+        node = rotateLeft(node);
+      } else {
+        // TODO: right then left
+      }
+    }
 
-    // left-right
-
-    // right-left
+    if (node.getParent() != null) {
+      rebalance(node.getParent());
+    } else {
+      root = node;
+    }
   }
 
-  private void rotateLeft() {
+  private AvlTreeNode<T> rotateLeft(AvlTreeNode<T> node) {
+    AvlTreeNode<T> nodeReplacement = node.getRightChild();
+
+    node.setRightChild(nodeReplacement.getLeftChild());
+    if (nodeReplacement.getLeftChild() != null ) {
+      nodeReplacement.getLeftChild().setParent(node);
+    }
+
+    AvlTreeNode<T> nodeOldParent = node.getParent();
+
+    nodeReplacement.setLeftChild(node);
+    node.setParent(nodeReplacement);
+
+    nodeReplacement.setParent(nodeOldParent);
+    if (nodeOldParent != null) {
+      if (nodeOldParent.getLeftChild().equals(node)) {
+        nodeOldParent.setLeftChild(nodeReplacement);
+      } else {
+        nodeOldParent.setRightChild(nodeReplacement);
+      }
+    }
+
+    return nodeReplacement;
+  }
+
+  private AvlTreeNode<T> rotateRight(AvlTreeNode<T> node) {
+    AvlTreeNode<T> nodeReplacement = node.getLeftChild();
+
+    node.setLeftChild(nodeReplacement.getRightChild());
+    if (nodeReplacement.getRightChild() != null) {
+      nodeReplacement.getRightChild().setParent(node);
+    }
+
+    AvlTreeNode<T> nodeOldParent = node.getParent();
+
+    nodeReplacement.setRightChild(node);
+    node.setParent(nodeReplacement);
+
+    nodeReplacement.setParent(nodeOldParent);
+    if (nodeOldParent != null) {
+      if (nodeOldParent.getLeftChild().equals(node)) {
+        nodeOldParent.setLeftChild(nodeReplacement);
+      } else {
+        nodeOldParent.setRightChild(nodeReplacement);
+      }
+    }
+
+    return nodeReplacement;
+  }
+
+  private void rotateRightThenLeft(AvlTreeNode<T> node) {
 
   }
 
-  private void rotateRight() {
-
-  }
-
-  private void rotateRightThenLeft() {
-
-  }
-
-  private void rotateLeftThenRight() {
+  private void rotateLeftThenRight(AvlTreeNode<T> node) {
 
   }
 }
