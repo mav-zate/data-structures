@@ -53,7 +53,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
           }
           currentNode = currentNode.getRightChild();
         } else {
-          currentNode.setRightChild(new AvlTreeNode<>(key));
+          currentNode.setRightChild(key);
+          height = -1;
           return true;
         }
       } else {
@@ -64,13 +65,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
           }
           currentNode = currentNode.getLeftChild();
         } else {
-          currentNode.setLeftChild(new AvlTreeNode<>(key));
+          currentNode.setLeftChild(key);
+          height = -1;
           return true;
         }
       }
     }
 
-    height = -1;
   }
 
   /**
