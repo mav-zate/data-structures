@@ -14,6 +14,7 @@ import java.util.List;
 public class BinarySearchTree<T extends Comparable<T>> {
   private final BinaryTreeNode<T> root;
   private int height = -1;
+  private int size;
 
   /**
    * BST must be initialized with root node
@@ -25,6 +26,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
       throw new NullPointerException();
     }
 
+    size = 1;
     root = new BinaryTreeNodeImpl<>(key);
   }
 
@@ -54,6 +56,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
           currentNode = currentNode.getRightChild();
         } else {
           currentNode.setRightChild(key);
+          size++;
           height = -1;
           return true;
         }
@@ -66,6 +69,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
           currentNode = currentNode.getLeftChild();
         } else {
           currentNode.setLeftChild(key);
+          size++;
           height = -1;
           return true;
         }
@@ -84,10 +88,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
    * @throws IllegalArgumentException
    */
   public boolean delete(T key) throws IllegalArgumentException {
-    if (!(key instanceof Comparable) || key.compareTo(root.getKey()) == 0) {
+    if (!(key instanceof Comparable)) {
       throw new IllegalArgumentException();
+    } else if (size < 1) {
+      return false;
     }
 
+    // TODO: handle cases when node with 1 and 2 child(ren), respectively
     boolean deleted = false;
     BinaryTreeNode<T> currentNode = root;
     while (!deleted) {
@@ -102,6 +109,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
         if (key.compareTo(leftChild.getKey()) == 0) {
           currentNode.setLeftChild(null);
+          size--;
           deleted = true;
         } else {
           currentNode = currentNode.getLeftChild();
@@ -113,6 +121,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
         if (key.compareTo(rightChild.getKey()) == 0) {
           currentNode.setRightChild(null);
+          size--;
           deleted = true;
         } else {
           currentNode = currentNode.getRightChild();
@@ -184,6 +193,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
    */
   public List<T> depthFirstInOrder() {
     return depthFirst(root);
+  }
+
+  /**
+   * Gets number of keys in tree
+   *
+   * @return
+   */
+  public int size() {
+    return size;
   }
 
   private List<T> depthFirst(BinaryTreeNode<T> node) {
