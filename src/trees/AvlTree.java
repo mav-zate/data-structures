@@ -2,12 +2,14 @@ package trees;
 
 public class AvlTree<T extends Comparable<T>> {
   private AvlTreeNode<T> root;
+  private int size;
 
   public AvlTree(T rootKey) throws NullPointerException {
     if (rootKey == null) {
       throw new NullPointerException();
     }
 
+    size = 1;
     root = new AvlTreeNode<>(rootKey);
   }
 
@@ -24,6 +26,11 @@ public class AvlTree<T extends Comparable<T>> {
 
     AvlTreeNode<T> newNode = new AvlTreeNode<>(key);
     AvlTreeNode<T> currentNode = root;
+
+    if (root == null) {
+      root = newNode;
+    }
+
     while (true) {
       if (key.compareTo(currentNode.getKey()) > 0) {
         AvlTreeNode<T> rightChild = currentNode.getRightChild();
@@ -35,6 +42,7 @@ public class AvlTree<T extends Comparable<T>> {
         } else {
           currentNode.setRightChild(newNode);
           newNode.setParent(currentNode);
+          size++;
           rebalance(currentNode);
           return true;
         }
@@ -48,6 +56,7 @@ public class AvlTree<T extends Comparable<T>> {
         } else {
           currentNode.setLeftChild(newNode);
           newNode.setParent(currentNode);
+          size++;
           rebalance(currentNode);
           return true;
         }
@@ -55,10 +64,76 @@ public class AvlTree<T extends Comparable<T>> {
     }
   }
 
-  // TODO: write delete
-//  public boolean delete(T key) throws NullPointerException {
-//
-//  }
+  /**
+   * If given key is in tree, deletes node. Returns true if deletion occurs, false otherwise.
+   *
+   *
+   * @param key
+   * @return
+   * @throws IllegalArgumentException
+   */
+  public boolean delete(T key) throws IllegalArgumentException {
+    if (!(key instanceof Comparable)) {
+      throw new IllegalArgumentException();
+    } else if (size < 1) {
+      return false;
+    }
+
+    AvlTreeNode<T> currentNode = root;
+    boolean deleted = false;
+    while (!deleted) {
+      if (currentNode == null) {
+        break;
+      }
+
+      int orderComparison = key.compareTo(currentNode.getKey());
+      if (orderComparison == 0) {
+        delete(currentNode);
+        size--;
+      } else if (orderComparison < 0) {
+        currentNode = currentNode.getLeftChild();
+      } else {
+        currentNode = currentNode.getRightChild();
+      }
+    }
+
+    return deleted;
+  }
+
+  private void delete(AvlTreeNode<T> node){
+    if (node.getLeftChild() == null && node.getRightChild() == null) {
+      AvlTreeNode<T> parent = node.getParent();
+      node.setParent(null);
+      if (parent == null) {
+        root = null;
+      } else {
+        if (parent.getKey().compareTo(node.getKey()) < 1) {
+          parent.setRightChild(null);
+        } else {
+          parent.setLeftChild(null);
+        }
+        rebalance(parent);
+      }
+    }
+
+    AvlTreeNode<T> child;
+    if (node.getLeftChild() != null) {
+      child = node.getLeftChild();
+      while (child.getRightChild() != null) {
+        child = child.getRightChild();
+      }
+      node.setKey(child.getKey());
+      delete(child);
+    } else if (node.getRightChild() != null) {
+      child = node.getRightChild();
+      while (child.getLeftChild() != null) {
+        child = child.getLeftChild();
+      }
+      node.setKey(child.getKey());
+      delete(child);
+    }
+  }
+
 
   /**
    *
@@ -93,6 +168,15 @@ public class AvlTree<T extends Comparable<T>> {
   }
 
   /**
+   * Get number of keys in tree
+   *
+   * @return
+   */
+  public int size() {
+    return size;
+  }
+
+  /**
    *
    *
    * @param node
@@ -118,7 +202,6 @@ public class AvlTree<T extends Comparable<T>> {
     }
   }
 
-  // TODO: write rebalance
   private void rebalance(AvlTreeNode<T> node) {
     setBalanceFactor(node);
 
@@ -128,7 +211,7 @@ public class AvlTree<T extends Comparable<T>> {
       if (height(leftChild.getLeftChild()) >= height(leftChild.getRightChild())) {
         node = rotateRight(node);
       } else {
-          // TODO: left then right
+          node = rotateLeftThenRight(node);
       }
 
     } else if (balanceFactor > 1) {
@@ -136,7 +219,7 @@ public class AvlTree<T extends Comparable<T>> {
       if (height(rightChild.getLeftChild()) <= height(rightChild.getRightChild())) {
         node = rotateLeft(node);
       } else {
-        // TODO: right then left
+        node = rotateRightThenLeft(node);
       }
     }
 
@@ -169,6 +252,8 @@ public class AvlTree<T extends Comparable<T>> {
       }
     }
 
+    setBalanceFactor(node, nodeReplacement);
+
     return nodeReplacement;
   }
 
@@ -194,14 +279,18 @@ public class AvlTree<T extends Comparable<T>> {
       }
     }
 
+    setBalanceFactor(node, nodeReplacement);
+
     return nodeReplacement;
   }
 
-  private void rotateRightThenLeft(AvlTreeNode<T> node) {
-
+  private AvlTreeNode<T> rotateRightThenLeft(AvlTreeNode<T> node) {
+    node.setRightChild(rotateRight(node.getRightChild()));
+    return rotateLeft(node);
   }
 
-  private void rotateLeftThenRight(AvlTreeNode<T> node) {
-
+  private AvlTreeNode<T> rotateLeftThenRight(AvlTreeNode<T> node) {
+    node.setLeftChild(rotateLeft(node.getLeftChild()));
+    return rotateRight(node);
   }
 }
