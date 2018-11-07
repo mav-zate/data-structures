@@ -24,6 +24,10 @@ public class AvlTreeNode<T extends Comparable<T>> {
       return key;
     }
 
+  public void setKey(T key) {
+    this.key = key;
+  }
+
   public int getBalanceFactor() {
       return balanceFactor;
     }
