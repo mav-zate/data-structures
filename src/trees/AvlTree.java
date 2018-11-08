@@ -1,5 +1,8 @@
 package trees;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+
 public class AvlTree<T extends Comparable<T>> {
   private AvlTreeNode<T> root;
   private int size;
@@ -14,6 +17,12 @@ public class AvlTree<T extends Comparable<T>> {
   }
 
   /**
+   * Inserts node according to order imposed by {@link BinarySearchTree}.
+   *
+   * Self balances tree so that the {@link AvlTreeNode#balanceFactor} for every node is within
+   * the [-1, 1] range.
+   *
+   * Throws {@link NullPointerException} if key parameter is null
    *
    * @param key
    * @return
@@ -67,7 +76,6 @@ public class AvlTree<T extends Comparable<T>> {
   /**
    * If given key is in tree, deletes node. Returns true if deletion occurs, false otherwise.
    *
-   *
    * @param key
    * @return
    * @throws IllegalArgumentException
@@ -98,6 +106,89 @@ public class AvlTree<T extends Comparable<T>> {
     }
 
     return deleted;
+  }
+
+  /**
+   * Returns true if given key in tree
+   *
+   * Throws {@link IllegalArgumentException} if key is not instance of Comparable
+   *
+   * @param key
+   * @return
+   * @throws IllegalArgumentException
+   */
+  public boolean contains(T key) throws IllegalArgumentException {
+    if (!(key instanceof Comparable)) {
+      throw new NullPointerException();
+    }
+
+    AvlTreeNode<T> currentNode = root;
+    boolean found = false;
+    while (!found) {
+      if (currentNode == null) {
+        break;
+      }
+
+      int orderComparison = key.compareTo(currentNode.getKey());
+      if (orderComparison == 0) {
+        found = true;
+      } else if (orderComparison < 0) {
+        currentNode = currentNode.getLeftChild();
+      } else {
+        currentNode = currentNode.getRightChild();
+      }
+    }
+
+    return found;
+  }
+
+  /**
+   * Get number of keys in tree
+   *
+   * @return
+   */
+  public int size() {
+    return size;
+  }
+
+  /**
+   * Returns height of whole tree
+   *
+   * @return
+   */
+  public int height() {
+    return height(root);
+  }
+
+  /**
+   * Returns nodes of tree in logical order
+   *
+   * @return
+   */
+  public List<T> depthFirstInOrder() {
+    return depthFirst(root);
+  }
+
+  private int height(AvlTreeNode<T> node) {
+    if (node == null) {
+      return -1;
+    }
+
+    return node.getHeight();
+  }
+
+  private List<T> depthFirst(AvlTreeNode<T> node) {
+    List<T> allNodes = Lists.newArrayList();
+
+    if (node == null) {
+      return allNodes;
+    } else {
+      allNodes.addAll(depthFirst(node.getLeftChild()));
+      allNodes.add(node.getKey());
+      allNodes.addAll(depthFirst(node.getRightChild()));
+    }
+
+    return allNodes;
   }
 
   private void delete(AvlTreeNode<T> node){
@@ -132,62 +223,6 @@ public class AvlTree<T extends Comparable<T>> {
       node.setKey(child.getKey());
       delete(child);
     }
-  }
-
-
-  /**
-   *
-   *
-   * @param key
-   * @return
-   * @throws NullPointerException
-   */
-  public boolean contains(T key) throws NullPointerException {
-    if (key == null) {
-      throw new NullPointerException();
-    }
-
-    AvlTreeNode<T> currentNode = root;
-    boolean found = false;
-    while (!found) {
-      if (currentNode == null) {
-        break;
-      }
-
-      int orderComparison = key.compareTo(currentNode.getKey());
-      if (orderComparison == 0) {
-        found = true;
-      } else if (orderComparison < 0) {
-        currentNode = currentNode.getLeftChild();
-      } else {
-        currentNode = currentNode.getRightChild();
-      }
-    }
-
-    return found;
-  }
-
-  /**
-   * Get number of keys in tree
-   *
-   * @return
-   */
-  public int size() {
-    return size;
-  }
-
-  /**
-   *
-   *
-   * @param node
-   * @return
-   */
-  public int height(AvlTreeNode<T> node) {
-    if (node == null) {
-      return -1;
-    }
-
-    return node.getHeight();
   }
 
   private void resetHeight(AvlTreeNode<T> node) {
@@ -292,5 +327,20 @@ public class AvlTree<T extends Comparable<T>> {
   private AvlTreeNode<T> rotateLeftThenRight(AvlTreeNode<T> node) {
     node.setLeftChild(rotateLeft(node.getLeftChild()));
     return rotateRight(node);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("BinarySearchTree: {");
+
+    List<T> keys = depthFirstInOrder();
+    for (T key : keys) {
+      sb.append(key);
+      sb.append(", ");
+    }
+    sb.delete(sb.length() - 2, sb.length());
+    sb.append("}");
+
+    return sb.toString();
   }
 }
