@@ -98,6 +98,7 @@ public class AvlTree<T extends Comparable<T>> {
       if (orderComparison == 0) {
         delete(currentNode);
         size--;
+        deleted = true;
       } else if (orderComparison < 0) {
         currentNode = currentNode.getLeftChild();
       } else {
@@ -280,7 +281,7 @@ public class AvlTree<T extends Comparable<T>> {
 
     nodeReplacement.setParent(nodeOldParent);
     if (nodeOldParent != null) {
-      if (nodeOldParent.getLeftChild().equals(node)) {
+      if (nodeOldParent.getLeftChild() != null && nodeOldParent.getLeftChild().equals(node)) {
         nodeOldParent.setLeftChild(nodeReplacement);
       } else {
         nodeOldParent.setRightChild(nodeReplacement);
@@ -307,7 +308,7 @@ public class AvlTree<T extends Comparable<T>> {
 
     nodeReplacement.setParent(nodeOldParent);
     if (nodeOldParent != null) {
-      if (nodeOldParent.getLeftChild().equals(node)) {
+      if (nodeOldParent.getLeftChild() != null && nodeOldParent.getLeftChild().equals(node)) {
         nodeOldParent.setLeftChild(nodeReplacement);
       } else {
         nodeOldParent.setRightChild(nodeReplacement);
