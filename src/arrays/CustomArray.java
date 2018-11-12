@@ -7,9 +7,13 @@ public interface CustomArray<T> {
 
   void set(int idx, T item);
 
+  void add(T item);
+
   T delete(int idx);
 
   void deleteAll();
 
   int size();
+
+  CustomArray<T> slice(int startIdx, int endIdx);
 }
