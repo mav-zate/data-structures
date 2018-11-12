@@ -3,10 +3,14 @@ package arrays;
 /**
  * Implementation of dynamic array backed by a static array
  */
-public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, Sortable<T> {
+public class DynamicArray<T extends Comparable<T>> implements CustomArray<T> {
   private Object[] internalArray;
   private int actualSize;
   private int maxSize;
+
+  public DynamicArray() throws Exception {
+      this(10);
+  }
 
   public DynamicArray(int size) throws Exception {
     if (size < 1) {
@@ -77,6 +81,7 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, So
    *
    * @param item
    */
+  @Override
   public void add(T item) {
     insert(actualSize, item);
   }
@@ -120,6 +125,35 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, So
   }
 
   /**
+   * Returns a copy of the list from the startIdx (inclusive) to the endIdx (exclusive).
+   * The elements of this copy contain references to the elements of the original list so any
+   * non-structural changes to those elements will be reflected in the return value of this
+   * function.
+   *
+   * @param startIdx
+   * @param endIdx
+   * @return
+   * @throws IndexOutOfBoundsException
+   */
+  @Override
+  public DynamicArray<T> slice(int startIdx, int endIdx) throws IndexOutOfBoundsException {
+    if (sliceOutOfBounds(startIdx, endIdx)) {
+      throw new IndexOutOfBoundsException("Start index must be lower than end index");
+    }
+
+    DynamicArray<T> subArray = null;
+    try {
+      subArray = new DynamicArray<>(endIdx - startIdx);
+      for (int idx = startIdx; idx < endIdx; idx++) {
+        subArray.add((T) internalArray[idx]);
+      }
+    } catch (Exception e) {
+
+    }
+    return subArray;
+  }
+
+  /**
    * O(1)
    *
    * @return
@@ -143,7 +177,10 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, So
     return idx < 0 || idx >= actualSize;
   }
 
-  // TODO: polish string method
+  private boolean sliceOutOfBounds(int startIdx, int endIdx) {
+    return startIdx < 0 || endIdx > actualSize || startIdx >= endIdx;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -152,7 +189,9 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T>, So
     for (int i = 0; i < actualSize; i++) {
       sb.append(internalArray[i] + ", ");
     }
+    sb.delete(sb.length() - 2, sb.length());
     sb.append("]");
+
     return sb.toString();
   }
 

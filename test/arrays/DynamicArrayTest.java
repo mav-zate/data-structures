@@ -2,6 +2,7 @@ package arrays;
 
 
 import org.junit.jupiter.api.*;
+import testutils.ArrayUtils;
 
 /**
  * Created by malzate on 10/2/2018.
@@ -94,6 +95,22 @@ public class DynamicArrayTest {
         Assertions.assertEquals(1, (Object) array.get(0));
         Assertions.assertEquals(10, (Object) array.get(1));
       });
+    }
+
+    @Test
+    @DisplayName("::slice")
+    void testSlice() throws Exception {
+      CustomArray<Integer> expectedResult = ArrayUtils.initAscendingOrderArray(2);
+
+      array.add(2);
+      array.add(3);
+      array.add(4);
+      array.add(5);
+
+      Assertions.assertAll(
+          () -> Assertions.assertThrows(IndexOutOfBoundsException.class, () -> array.slice(2, 2)),
+          () -> Assertions.assertEquals(expectedResult, array.slice(0, 2))
+      );
     }
   }
 }
