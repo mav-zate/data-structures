@@ -6,10 +6,6 @@ import comparison.SortComparison;
 import org.junit.jupiter.api.*;
 import testutils.ArrayUtils;
 
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class BubbleSortTest {
   BubbleSort<Integer> bubbleSort;
 
@@ -22,8 +18,8 @@ class BubbleSortTest {
   @DisplayName("Ascending Order")
   class AscendingOrderTest {
     SortComparison<Integer, Boolean> sortComparison;
-    Sortable<Integer> actualResult;
-    Sortable<Integer> expectedResult;
+    CustomArray<Integer> actualResult;
+    CustomArray<Integer> expectedResult;
 
     @BeforeEach
     void init() throws Exception {
@@ -45,8 +41,8 @@ class BubbleSortTest {
   @DisplayName("Descending Order")
   class DescendingOrdertest {
     SortComparison<Integer, Boolean> sortComparison;
-    Sortable<Integer> actualResult;
-    Sortable<Integer> expectedResult;
+    CustomArray<Integer> actualResult;
+    CustomArray<Integer> expectedResult;
 
     @BeforeEach
     void init() throws Exception {

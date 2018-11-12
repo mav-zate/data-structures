@@ -8,7 +8,7 @@ import testutils.ArrayUtils;
 
 class InsertionSortTest {
   InsertionSort<Integer> insertionSort;
-  DynamicArray<Integer> sortedArray;
+  CustomArray<Integer> sortedArray;
 
   @BeforeEach
   void init() throws Exception {
@@ -18,7 +18,7 @@ class InsertionSortTest {
 
   @Test
   void testSort() throws Exception {
-    DynamicArray<Integer> inputArray = ArrayUtils.initUnsortedArray(10);
+    CustomArray<Integer> inputArray = ArrayUtils.initUnsortedArray(10);
     insertionSort.sort(inputArray, new AscendingOrder<>());
 
     Assertions.assertEquals(sortedArray, inputArray);

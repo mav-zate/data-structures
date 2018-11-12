@@ -8,8 +8,8 @@ import testutils.ArrayUtils;
 
 class SelectionSortTest {
   SelectionSort<Integer> selectionSort;
-  DynamicArray<Integer> sortedArray;
-  DynamicArray<Integer> inputArray;
+  CustomArray<Integer> sortedArray;
+  CustomArray<Integer> inputArray;
 
   @BeforeEach
   void init() throws Exception {

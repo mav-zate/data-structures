@@ -18,7 +18,7 @@ public class BubbleSort<T extends Comparable<T>> implements Sorter<T> {
   }
 
   @Override
-  public void sort(Sortable<T> array, SortComparison<T, Boolean> comparator) {
+  public void sort(CustomArray<T> array, SortComparison<T, Boolean> comparator) {
     boolean notSorted = true;
 
     int length = array.size();

@@ -8,7 +8,7 @@ import comparison.SortComparison;
  */
 public class SelectionSort<T extends Comparable<T>> implements Sorter<T> {
   @Override
-  public void sort(Sortable<T> sortable, SortComparison<T, Boolean> comparator) {
+  public void sort(CustomArray<T> sortable, SortComparison<T, Boolean> comparator) {
     for (int i = 0; i < sortable.size() - 1; i++) {
       T min = sortable.get(i);
       int indexOfMin = -1;

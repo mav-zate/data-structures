@@ -9,7 +9,7 @@ import comparison.SortComparison;
  */
 public class InsertionSort<T extends Comparable<T>> implements Sorter<T> {
   @Override
-  public void sort(Sortable<T> sortable, SortComparison<T, Boolean> comparator) {
+  public void sort(CustomArray<T> sortable, SortComparison<T, Boolean> comparator) {
     for (int unsortedIdx = 0; unsortedIdx < sortable.size(); unsortedIdx++) {
       int sortedIdx = unsortedIdx;
       while (sortedIdx > 0 && comparator.isSwap(sortable.get(sortedIdx - 1), sortable.get(sortedIdx))) {

@@ -9,10 +9,23 @@ import comparison.SortComparison;
  */
 public interface Sorter<T extends Comparable<T>> {
   /**
-   * Takes item
+   * For in-place sorts
    *
    * @param sortable item to be sorted
    * @param comparator function that determines sort order
    */
-  void sort(Sortable<T> sortable, SortComparison<T, Boolean> comparator);
+  default void sort(CustomArray<T> sortable, SortComparison<T, Boolean> comparator) {
+    return;
+  }
+
+  /**
+   * For out-of-place sorts
+   *
+   * @param comparator
+   * @param sortable
+   * @return
+   */
+  default CustomArray<T> sort(SortComparison<T, Boolean> comparator, CustomArray<T> sortable) {
+    return sortable;
+  }
 }
