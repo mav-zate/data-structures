@@ -1,7 +1,7 @@
 package arrays;
 
 /**
- * Wrapper for data structures that can be sorted by a comparison-ssort algorithm
+ * Wrapper for data structures that can be sorted by a comparison-sort algorithm
  *
  * @param <T>
  */
