@@ -91,6 +91,8 @@ public class Trie {
   public boolean contains(String key) {
     if (key == null) {
       throw new NullPointerException();
+    } else if (key.isEmpty()) {
+      return true;
     }
 
     char[] keyLetters = key.toLowerCase().toCharArray();
