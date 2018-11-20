@@ -67,14 +67,57 @@ public class TrieTest {
 
   @Nested
   @DisplayName("::delete")
-  class TrieInsert {
+  class TrieDelete {
     @BeforeEach
     void init() {
       TrieTest.this.init();
     }
 
     @Test
+    @DisplayName("does not delete multiple keys on same branch (sharing same prefix)")
+    void testDeleteSingleBranchWithManyKeys() {
+      String prefix = "under";
+      String mid = "stand";
+      String suffix = "able";
+      trie.insert(prefix);
+      trie.insert(prefix + mid);
+      trie.insert(prefix + mid + suffix);
 
+      trie.delete(prefix + mid);
+
+      Assertions.assertAll(
+          () -> Assertions.assertEquals(true, trie.contains(prefix)),
+          () -> Assertions.assertEquals(false, trie.contains(prefix + mid)),
+          () -> Assertions.assertEquals(true, trie.contains(prefix + mid + suffix))
+      );
+    }
+
+    @Test
+    @DisplayName("removes key with no shared prefix")
+    void testDeleteKeyNotSharingrefix() {
+      String exampleKey = "someString";
+      trie.insert(exampleKey);
+      Assertions.assertAll(
+          () -> Assertions.assertEquals(true, trie.delete(exampleKey)),
+          () -> Assertions.assertEquals(false, trie.contains(exampleKey))
+      );
+    }
+
+    @Test
+    @DisplayName("")
+    void testDeleteKeyWithSharedPrefix() {
+      String prefix = "circum";
+      String suffix1 = "spect";
+      String suffix2 = "vent";
+      String suffix3 = "navigate";
+
+      Assertions.assertAll(
+          () -> Assertions.assertEquals(true, trie.delete(prefix + suffix3)),
+          () -> Assertions.assertEquals(true, trie.contains(prefix + suffix1)),
+          () -> Assertions.assertEquals(true, trie.contains(prefix + suffix2)),
+          () -> Assertions.assertEquals(false, trie.contains(prefix + suffix3))
+      );
+    }
   }
 
 //
