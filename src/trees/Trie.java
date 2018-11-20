@@ -1,5 +1,6 @@
 package trees;
 
+import arrays.CustomArray;
 import arrays.DynamicArray;
 
 public class Trie {
@@ -11,7 +12,6 @@ public class Trie {
 
   /**
    *
-   * 
    * @param key
    */
   public void insert(String key) {
@@ -106,7 +106,25 @@ public class Trie {
     return currentNode.isTerminal();
   }
 
-  public DynamicArray<String> getAllKeysStartingWith(String substring) {
+  public CustomArray<String> getAllKeysStartingWith(String substring) {
+    return getAllSuffixes(substring, root);
+  }
 
+  private CustomArray<String> getAllSuffixes(String substring, TrieNode currentNode) {
+    if (currentNode.getChildCount() < 1 && currentNode.isTerminal()) {
+      String valueAsString = Character.toString(currentNode.getValue());
+      return new DynamicArray<>(valueAsString);
+    }
+
+    CustomArray<String> strings = new DynamicArray<>();
+    CustomArray<TrieNode> children = currentNode.getNonNullChildren();
+    for (int i = 0; i < children.size(); i++) {
+      CustomArray<String> childStrings = getAllSuffixes(substring.substring(1, substring.length()), children.get(i));
+      for (int j = 0; j < childStrings.size(); j++) {
+        strings.add(childStrings.get(j));
+      }
+    }
+
+    return strings;
   }
 }
