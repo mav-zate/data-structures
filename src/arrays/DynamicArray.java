@@ -7,19 +7,28 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T> {
   private Object[] internalArray;
   private int actualSize;
   private int maxSize;
+  private static final int DEFAULT_SIZE = 10;
 
-  public DynamicArray() throws Exception {
-      this(10);
+  public DynamicArray() {
+      this(DEFAULT_SIZE);
   }
 
-  public DynamicArray(int size) throws Exception {
+  public DynamicArray(int size) {
     if (size < 1) {
-      throw new Exception("Array cannot have negative length");
+      System.out.println("Cannot have array of size less than 1, initializing with default size: " + DEFAULT_SIZE);
+      size = DEFAULT_SIZE;
     }
 
     internalArray = new Object[size];
     maxSize = size;
     actualSize = 0;
+  }
+
+  @SafeVarargs
+  public DynamicArray(T... initialElements) {
+    internalArray = initialElements;
+    maxSize = initialElements.length;
+    actualSize = initialElements.length;
   }
 
   /**
