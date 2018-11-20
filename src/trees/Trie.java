@@ -17,6 +17,8 @@ public class Trie {
   public void insert(String key) {
     if (key == null) {
       throw new NullPointerException();
+    } else if (key.isEmpty()) {
+      return;
     }
 
     char[] keyLetters = key.toLowerCase().toCharArray();
@@ -106,11 +108,26 @@ public class Trie {
     return currentNode.isTerminal();
   }
 
-  public CustomArray<String> getAllKeysStartingWith(String substring) {
-    return getAllSuffixes(substring, root);
+  /**
+   * Given a substring, returns all keys in trie that begin with substring as prefix.
+   *
+   * @param prefix
+   * @return
+   */
+  public CustomArray<String> getAllKeysWithPrefix(String prefix) {
+    if (prefix.isEmpty()) {
+      return new DynamicArray<>("");
+    }
+
+    return getAllSuffixes(prefix, root);
   }
 
-  private CustomArray<String> getAllSuffixes(String substring, TrieNode currentNode) {
+  @SuppressWarnings("unchecked")
+  private CustomArray<String> getAllSuffixes(String prefix, TrieNode currentNode) {
+    if (prefix.length() > 1 && currentNode.getChildCount() > 0) {
+      return new DynamicArray("");
+    }
+
     if (currentNode.getChildCount() < 1 && currentNode.isTerminal()) {
       String valueAsString = Character.toString(currentNode.getValue());
       return new DynamicArray<>(valueAsString);
@@ -119,9 +136,12 @@ public class Trie {
     CustomArray<String> strings = new DynamicArray<>();
     CustomArray<TrieNode> children = currentNode.getNonNullChildren();
     for (int i = 0; i < children.size(); i++) {
-      CustomArray<String> childStrings = getAllSuffixes(substring.substring(1, substring.length()), children.get(i));
+      CustomArray<String> childStrings = getAllSuffixes(prefix.substring(1, prefix.length()), children.get(i));
       for (int j = 0; j < childStrings.size(); j++) {
-        strings.add(childStrings.get(j));
+        String childStr = childStrings.get(j);
+        if (!childStr.isEmpty()) {
+          strings.add(childStr);
+        }
       }
     }
 
