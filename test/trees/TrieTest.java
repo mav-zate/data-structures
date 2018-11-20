@@ -142,13 +142,20 @@ public class TrieTest {
     );
   }
 
-  @Nested
+  @Test
   @DisplayName("::getAllKeysWithPrefix")
-  class TrieGetAllKeysWithPrefix {
-    @BeforeEach
-    void init() {
-      TrieTest.this.init();
-    }
+  void testGetAllKeysWithPrefix() {
+    String prefix = "circum";
+    String suffix1 = "spect";
+    String suffix2 = "vent";
+    String suffix3 = "navigate";
 
+    trie.insert(prefix + suffix1);
+    trie.insert(prefix + suffix2);
+    trie.insert(prefix + suffix3);
+
+    CustomArray<String> expectedResult = new DynamicArray<>((prefix + suffix1), (prefix + suffix2), (prefix + suffix3));
+
+    Assertions.assertEquals(expectedResult, trie.getAllKeysWithPrefix(prefix))
   }
 }
