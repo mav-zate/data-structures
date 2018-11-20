@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 public class TrieTest {
   Trie trie;
 
+  @BeforeEach
   void init() {
     trie = new Trie();
   }
@@ -120,35 +121,34 @@ public class TrieTest {
     }
   }
 
-//
-//  @Nested
-//  @DisplayName("::contains")
-//  class TrieInsert {
-//
-//  }
-//
-//  @Nested
-//  @DisplayName("::getAllKeysWithPrefix")
-//  class TrieInsert {
-//
-//  }
-
-
   @Test
-  public void testDelete() {
-    // if only one branch matches (no shared roots with other keys), delete whole branch
-    // if match suffix of shared root (and not prefix of other key), only delete relevant suffix not root
-    // if match prefix of other key, no delete. Just flip relevant terminal node
-    // if no match, no-op
+  @DisplayName("::contains")
+  void testContains() {
+    String prefix = "circum";
+    String suffix1 = "spect";
+    String suffix2 = "vent";
+    String suffix3 = "navigate";
+
+    trie.insert(prefix + suffix1);
+    trie.insert(prefix + suffix2);
+    trie.insert(prefix + suffix3);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(true, trie.contains("")),
+        () -> Assertions.assertEquals(false, trie.contains(prefix)),
+        () -> Assertions.assertEquals(true, trie.contains(prefix + suffix1)),
+        () -> Assertions.assertEquals(true, trie.contains(prefix + suffix2)),
+        () -> Assertions.assertEquals(true, trie.contains(prefix + suffix3))
+    );
   }
 
-  @Test
-  public void testContains() {
-
-  }
-
-  @Test
-  public void testGetAllKeysStartingWith() {
+  @Nested
+  @DisplayName("::getAllKeysWithPrefix")
+  class TrieGetAllKeysWithPrefix {
+    @BeforeEach
+    void init() {
+      TrieTest.this.init();
+    }
 
   }
 }
