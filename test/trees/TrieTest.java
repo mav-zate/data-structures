@@ -3,10 +3,7 @@ package trees;
 
 import arrays.CustomArray;
 import arrays.DynamicArray;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class TrieTest {
   Trie trie;
@@ -18,11 +15,15 @@ public class TrieTest {
   @Nested
   @DisplayName("::insert")
   class TrieInsert {
+    @BeforeEach
+    void init() {
+      TrieTest.this.init();
+    }
 
     @Test
     @DisplayName("no-op on empty string")
     void testInsertEmptyString() {
-      trie.insert("");
+      Assertions.assertEquals(false, trie.insert(""));
     }
 
     @Test
@@ -30,9 +31,10 @@ public class TrieTest {
     void testKeyWithNoPriorPrefix() {
       String exampleKey1 = "someString";
       String exampleKey2 = "anotherString";
-      trie.insert(exampleKey1);
-      trie.insert(exampleKey2);
-      Assertions.assertEquals(true, trie.contains(exampleKey2));
+      Assertions.assertAll(
+          () -> Assertions.assertEquals(true, trie.insert(exampleKey1)),
+          () -> Assertions.assertEquals(true, trie.insert(exampleKey2))
+      );
     }
 
     @Test
@@ -41,9 +43,11 @@ public class TrieTest {
       String exampleKey = "someString";
       trie.insert(exampleKey);
       trie.insert(exampleKey);
-      trie.delete(exampleKey);
 
-      Assertions.assertEquals(false, trie.contains(exampleKey));
+      Assertions.assertAll(
+          () -> Assertions.assertEquals(true, trie.insert(exampleKey)),
+          () -> Assertions.assertEquals(false, trie.insert(exampleKey))
+      );
     }
 
     @Test
@@ -52,20 +56,27 @@ public class TrieTest {
       String prefix = "circum";
       String suffix1 = "spect";
       String suffix2 = "vent";
-
       CustomArray<String> expectedResults = new DynamicArray<>((prefix + suffix1), (prefix + suffix2));
 
       trie.insert(prefix + suffix1);
       trie.insert(prefix + suffix2);
+
       Assertions.assertEquals(expectedResults, trie.getAllKeysWithPrefix(prefix));
     }
   }
 
-//  @Nested
-//  @DisplayName("::delete")
-//  class TrieInsert {
-//
-//  }
+  @Nested
+  @DisplayName("::delete")
+  class TrieInsert {
+    @BeforeEach
+    void init() {
+      TrieTest.this.init();
+    }
+
+    @Test
+
+  }
+
 //
 //  @Nested
 //  @DisplayName("::contains")

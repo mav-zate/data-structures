@@ -11,16 +11,21 @@ public class Trie {
   }
 
   /**
+   * Inserts key into trie.
+   *
+   * Returns true if insert successful, false otherwise
    *
    * @param key
+   * @return
    */
-  public void insert(String key) {
+  public boolean insert(String key) {
     if (key == null) {
       throw new NullPointerException();
     } else if (key.isEmpty()) {
-      return;
+      return false;
     }
 
+    boolean inserted = false;
     char[] keyLetters = key.toLowerCase().toCharArray();
     TrieNode currentNode = root;
     for (int currentIdx = 0; currentIdx < keyLetters.length; currentIdx++) {
@@ -30,11 +35,14 @@ public class Trie {
         currentNode.addChild(childIdx);
         if (currentIdx == keyLetters.length - 1) {
           currentNode.getChild(childIdx).setTerminal(true);
+          inserted = true;
         }
       }
 
       currentNode = currentNode.getChild(childIdx);
     }
+
+    return inserted;
   }
 
   /**
