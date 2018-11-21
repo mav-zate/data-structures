@@ -3,6 +3,8 @@ package trees;
 import arrays.CustomArray;
 import arrays.DynamicArray;
 
+import java.util.Optional;
+
 public class Trie {
   private TrieNode root;
 
@@ -129,16 +131,43 @@ public class Trie {
       return new DynamicArray<>("");
     }
 
-    return getAllSuffixes(prefix, root);
+    Optional<TrieNode> endOfPrefix = getEndOfPrefix(prefix);
+
+    if (endOfPrefix.isPresent()) {
+      CustomArray<TrieNode> endOfPrefixChildren = endOfPrefix.get().getNonNullChildren();
+      CustomArray<String> suffixes = new DynamicArray<>();
+      for (int i = 0; i < endOfPrefixChildren.size(); i++) {
+        suffixes.addAll(getAllSuffixes(endOfPrefixChildren.get(i)));
+      }
+      for (int j = 0; j < suffixes.size(); j++) {
+        suffixes.set(j, prefix + suffixes.get(j));
+      }
+      return suffixes;
+    } else {
+      return new DynamicArray<>("");
+    }
+  }
+
+  private Optional<TrieNode> getEndOfPrefix(String prefix) {
+    char[] prefixLetters = prefix.toLowerCase().toCharArray();
+    TrieNode currentNode = root;
+    for (int currentIdx = 0; currentIdx < prefixLetters.length; currentIdx++) {
+      int childIdx = prefixLetters[currentIdx] - TrieNode.ASCII_LOWERCASE_A_OFFSET;
+
+      if (!currentNode.hasChild(childIdx)) {
+        currentNode = null;
+        break;
+      } else {
+        currentNode = currentNode.getChild(childIdx);
+      }
+    }
+
+    return Optional.ofNullable(currentNode);
   }
 
   @SuppressWarnings("unchecked")
-  private CustomArray<String> getAllSuffixes(String prefix, TrieNode currentNode) {
-    if (prefix.length() > 1 && currentNode.getChildCount() > 0) {
-      return new DynamicArray("");
-    }
-
-    if (currentNode.getChildCount() < 1 && currentNode.isTerminal()) {
+  private CustomArray<String> getAllSuffixes(TrieNode currentNode) {
+    if (currentNode.isTerminal() && currentNode.getChildCount() < 1) {
       String valueAsString = Character.toString(currentNode.getValue());
       return new DynamicArray<>(valueAsString);
     }
@@ -146,12 +175,13 @@ public class Trie {
     CustomArray<String> strings = new DynamicArray<>();
     CustomArray<TrieNode> children = currentNode.getNonNullChildren();
     for (int i = 0; i < children.size(); i++) {
-      CustomArray<String> childStrings = getAllSuffixes(prefix.substring(1, prefix.length()), children.get(i));
+      if (currentNode.isTerminal()) {
+        strings.add(String.valueOf(currentNode.getValue()));
+      }
+      CustomArray<String> childStrings = getAllSuffixes(children.get(i));
       for (int j = 0; j < childStrings.size(); j++) {
         String childStr = childStrings.get(j);
-        if (!childStr.isEmpty()) {
-          strings.add(childStr);
-        }
+        strings.add(currentNode.getValue() + childStr);
       }
     }
 
