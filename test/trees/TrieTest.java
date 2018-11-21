@@ -42,8 +42,6 @@ public class TrieTest {
     @DisplayName("does not insert duplicate keys")
     void testInsertNoDuplicateKeys() {
       String exampleKey = "someString";
-      trie.insert(exampleKey);
-      trie.insert(exampleKey);
 
       Assertions.assertAll(
           () -> Assertions.assertEquals(true, trie.insert(exampleKey)),
@@ -112,11 +110,14 @@ public class TrieTest {
       String suffix2 = "vent";
       String suffix3 = "navigate";
 
+      trie.insert(prefix + suffix1);
+      trie.insert(prefix + suffix2);
+      trie.insert(prefix + suffix3);
+
       Assertions.assertAll(
           () -> Assertions.assertEquals(true, trie.delete(prefix + suffix3)),
           () -> Assertions.assertEquals(true, trie.contains(prefix + suffix1)),
-          () -> Assertions.assertEquals(true, trie.contains(prefix + suffix2)),
-          () -> Assertions.assertEquals(false, trie.contains(prefix + suffix3))
+          () -> Assertions.assertEquals(true, trie.contains(prefix + suffix2))
       );
     }
   }
@@ -154,8 +155,9 @@ public class TrieTest {
     trie.insert(prefix + suffix2);
     trie.insert(prefix + suffix3);
 
-    CustomArray<String> expectedResult = new DynamicArray<>((prefix + suffix1), (prefix + suffix2), (prefix + suffix3));
+    CustomArray<String> expectedResult =
+        new DynamicArray<>((prefix + suffix3), (prefix + suffix1), (prefix + suffix2));
 
-    Assertions.assertEquals(expectedResult, trie.getAllKeysWithPrefix(prefix))
+    Assertions.assertEquals(expectedResult, trie.getAllKeysWithPrefix(prefix));
   }
 }
