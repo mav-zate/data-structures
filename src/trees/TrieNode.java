@@ -49,7 +49,7 @@ public class TrieNode implements Comparable<TrieNode> {
    */
   public void addChild(int idx) {
     if (this.children[idx] == null) {
-      this.children[idx] = new TrieNode((char) idx);
+      this.children[idx] = new TrieNode((char) (idx + ASCII_LOWERCASE_A_OFFSET));
       this.childCount++;
     }
   }
