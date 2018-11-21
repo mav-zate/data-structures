@@ -12,11 +12,7 @@ public class DynamicArrayTest {
   DynamicArray<Integer> array;
 
   void init() {
-    try {
-      array = new DynamicArray<>(1);
-    } catch (Exception e) {
-      // Throws exception for negative size
-    }
+    array = new DynamicArray<>(1);
     array.add(1);
   }
 
@@ -47,6 +43,15 @@ public class DynamicArrayTest {
     void addTest() {
       array.add(10);
       Assertions.assertEquals(10, (Object) array.get(0));
+    }
+
+    @Test
+    @DisplayName("::addAll works")
+    void testAddAll() {
+      CustomArray<Integer> expectedResult = new DynamicArray<>(1, 2, 3, 4);
+      array.addAll(new DynamicArray<>(1, 2, 3, 4));
+
+      Assertions.assertEquals(expectedResult, array);
     }
 
     @Test
@@ -95,6 +100,15 @@ public class DynamicArrayTest {
         Assertions.assertEquals(1, (Object) array.get(0));
         Assertions.assertEquals(10, (Object) array.get(1));
       });
+    }
+
+    @Test
+    @DisplayName("::addAll works")
+    void testAddAll() {
+      CustomArray<Integer> expectedResult = new DynamicArray<>(1, 2, 3, 4, 5);
+      array.addAll(new DynamicArray<>(2, 3, 4, 5));
+
+      Assertions.assertEquals(expectedResult, array);
     }
 
     @Test

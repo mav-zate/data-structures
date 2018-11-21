@@ -95,6 +95,13 @@ public class DynamicArray<T extends Comparable<T>> implements CustomArray<T> {
     insert(actualSize, item);
   }
 
+  @Override
+  public void addAll(CustomArray<T> otherArray) {
+    for (int i = 0; i < otherArray.size(); i++) {
+      add(otherArray.get(i));
+    }
+  }
+
   /**
    * T: O(n)
    *

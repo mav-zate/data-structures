@@ -9,6 +9,8 @@ public interface CustomArray<T> {
 
   void add(T item);
 
+  void addAll(CustomArray<T> otherArray);
+
   T delete(int idx);
 
   void deleteAll();
