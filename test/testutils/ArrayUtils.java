@@ -13,7 +13,7 @@ public class ArrayUtils {
    * @return
    * @throws Exception
    */
-  public static DynamicArray<Integer> initUnsortedArray(int size) throws Exception {
+  public static DynamicArray<Integer> initUnsortedArray(int size) {
     DynamicArray<Integer> sortedArray = ArrayUtils.initAscendingOrderArray(size);
     final int initialCapacity = size;
     int capacity = sortedArray.size();
@@ -35,7 +35,7 @@ public class ArrayUtils {
    * @return
    * @throws Exception
    */
-  public static DynamicArray<Integer> initAscendingOrderArray(int size) throws Exception {
+  public static DynamicArray<Integer> initAscendingOrderArray(int size) {
     if (size < 1) {
       throw new ArrayIndexOutOfBoundsException("Size cannot be non-positive");
     }
@@ -53,7 +53,7 @@ public class ArrayUtils {
    * @return
    * @throws Exception
    */
-  public static DynamicArray<Integer> initDescendingOrderArray(int size) throws Exception {
+  public static DynamicArray<Integer> initDescendingOrderArray(int size) {
     if (size < 1) {
       throw new ArrayIndexOutOfBoundsException("Size cannot be non-positive");
     }
