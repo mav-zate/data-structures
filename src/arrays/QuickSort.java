@@ -5,17 +5,21 @@ import comparison.SortComparison;
 public class QuickSort<T extends Comparable<T>> implements Sorter<T> {
   @Override
   public void sort(CustomArray<T> sortable, SortComparison<T, Boolean> comparator) {
-    int pivotIdx = sortable.size() - 1;
-    quickSort(sortable, 0, pivotIdx - 1, pivotIdx);
+    if (sortable.size() <= 1) {
+      return;
+    } else {
+      quickSort(sortable, 0, 9);
+    }
   }
 
-  private void quickSort(CustomArray<T> array, int leftPointer, int rightPointer, int pivotIdx) {
-    int leftPointerStart = leftPointer;
-    int rightPointerStart = rightPointer;
+  private void quickSort(CustomArray<T> array, int leftBound, int rightBound) {
+    int pivotIdx = rightBound;
+    int leftPointer = leftBound;
+    int rightPointer = rightBound - 1;
     T pivotItem = array.get(pivotIdx);
 
-    while (leftPointer < rightPointer) {
-      while (array.get(leftPointer).compareTo(pivotItem) < 1) {
+    while (true) {
+      while (array.get(leftPointer).compareTo(pivotItem) < 0 && leftPointer < rightPointer) {
         leftPointer++;
       }
 
@@ -25,16 +29,21 @@ public class QuickSort<T extends Comparable<T>> implements Sorter<T> {
 
       if (leftPointer != rightPointer) {
         swap(leftPointer, rightPointer, array);
+      } else {
+        if (array.get(leftPointer).compareTo(pivotItem) > 0) {
+          swap(leftPointer, pivotIdx, array);
+        }
+        break;
       }
     }
 
-    swap(leftPointer, pivotIdx, array);
 
-    if (leftPointer - leftPointerStart < 2) {
-      quickSort(array, leftPointerStart, leftPointer - 2, leftPointer - 1);
+
+    if (leftPointer - leftBound > 1) {
+      quickSort(array, leftBound, leftPointer);
     }
-    if (rightPointerStart - rightPointer < 2) {
-      quickSort(array, rightPointer + 1, rightPointerStart - 1, rightPointerStart);
+    if (rightBound - leftPointer > 1) {
+      quickSort(array, leftPointer + 1, rightBound);
     }
   }
 
