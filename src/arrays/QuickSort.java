@@ -4,26 +4,26 @@ import comparison.SortComparison;
 
 public class QuickSort<T extends Comparable<T>> implements Sorter<T> {
   @Override
-  public void sort(CustomArray<T> sortable, SortComparison<T, Boolean> comparator) {
+  public void sort(CustomArray<T> sortable, SortComparison<T, Integer> comparator) {
     if (sortable.size() <= 1) {
       return;
     } else {
-      quickSort(sortable, 0, 9);
+      quickSort(sortable, 0, 9, comparator);
     }
   }
 
-  private void quickSort(CustomArray<T> array, int leftBound, int rightBound) {
+  private void quickSort(CustomArray<T> array, int leftBound, int rightBound, SortComparison<T, Integer> comparator) {
     int pivotIdx = rightBound;
     int leftPointer = leftBound;
     int rightPointer = rightBound - 1;
     T pivotItem = array.get(pivotIdx);
 
     while (true) {
-      while (array.get(leftPointer).compareTo(pivotItem) < 0 && leftPointer < rightPointer) {
+      while (comparator.compare(array.get(leftPointer), pivotItem) < 0 && leftPointer < rightPointer) {
         leftPointer++;
       }
 
-      while (array.get(rightPointer).compareTo(pivotItem) > 0 && leftPointer < rightPointer) {
+      while (comparator.compare(array.get(rightPointer), pivotItem) > 0 && leftPointer < rightPointer) {
         rightPointer--;
       }
 
@@ -40,10 +40,10 @@ public class QuickSort<T extends Comparable<T>> implements Sorter<T> {
 
 
     if (leftPointer - leftBound > 1) {
-      quickSort(array, leftBound, leftPointer);
+      quickSort(array, leftBound, leftPointer, comparator);
     }
     if (rightBound - leftPointer > 1) {
-      quickSort(array, leftPointer + 1, rightBound);
+      quickSort(array, leftPointer + 1, rightBound, comparator);
     }
   }
 
