@@ -3,7 +3,7 @@ package arrays;
 /**
  * Implementation of dynamic array backed by a static array
  */
-public class DynamicArray<T extends Comparable<T>> implements CustomArray<T> {
+public class DynamicArray<T> implements CustomArray<T> {
   private Object[] internalArray;
   private int actualSize;
   private int maxSize;

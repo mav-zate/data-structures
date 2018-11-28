@@ -1,5 +1,6 @@
 package testutils;
 
+import arrays.ComparableArray;
 import arrays.DynamicArray;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,7 +19,7 @@ public class ArrayUtils {
     final int initialCapacity = size;
     int capacity = sortedArray.size();
 
-    DynamicArray<Integer> unsortedArray = new DynamicArray<>(sortedArray.size());
+    DynamicArray<Integer> unsortedArray = new ComparableArray<>(sortedArray.size());
     for (int i = 0; i < initialCapacity; i++) {
       int randomIdx = ThreadLocalRandom.current().nextInt(0, capacity--);
       Integer item = sortedArray.delete(randomIdx);
@@ -39,7 +40,7 @@ public class ArrayUtils {
     if (size < 1) {
       throw new ArrayIndexOutOfBoundsException("Size cannot be non-positive");
     }
-    DynamicArray<Integer> expectedResult = new DynamicArray<>(size);
+    DynamicArray<Integer> expectedResult = new ComparableArray<>(size);
     for (int i = 1; i < size + 1; i++) {
       expectedResult.add(i);
     }
@@ -58,7 +59,7 @@ public class ArrayUtils {
       throw new ArrayIndexOutOfBoundsException("Size cannot be non-positive");
     }
 
-    DynamicArray<Integer> expectedResult = new DynamicArray<>(size);
+    DynamicArray<Integer> expectedResult = new ComparableArray<>(size);
     for (int i = size; i > 0; i--) {
       expectedResult.add(i);
     }
