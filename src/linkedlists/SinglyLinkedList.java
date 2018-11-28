@@ -5,7 +5,7 @@ import nodes.SinglyLinkedNode;
 public class SinglyLinkedList<T> {
   private SinglyLinkedNode<T> head;
 
-  SinglyLinkedList() {
+  public SinglyLinkedList() {
     head = new SinglyLinkedNode<>(null, null);
   }
 
