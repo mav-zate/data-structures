@@ -1,12 +1,15 @@
 package linkedlists;
 
 import nodes.SinglyLinkedNode;
+import java.util.EmptyStackException;
 
 public class SinglyLinkedList<T> {
   private SinglyLinkedNode<T> head;
+  private int size;
 
   public SinglyLinkedList() {
     head = new SinglyLinkedNode<>(null, null);
+    size = 0;
   }
 
   /**
@@ -60,6 +63,7 @@ public class SinglyLinkedList<T> {
     if (insertNode != null && insertNode.getData() != null) {
       insertNode.setNext(head.getNext());
       head.setNext(insertNode);
+      size++;
     }
   }
 
@@ -102,10 +106,48 @@ public class SinglyLinkedList<T> {
       if (currentNode.getData().equals(deleteData)) {
         prevNode.setNext(currentNode.getNext());
         currentNode.setNext(null);
+        size--;
         return true;
       }
     }
 
     return false;
+  }
+
+  /**
+   * Return value at head of linked list while removing it.
+   *
+   * Throws {@link EmptyStackException} in case the stack is empty
+   *
+   * @return
+   */
+  // TODO: test pop method
+  public T pop() {
+    if (size < 1) {
+      throw new EmptyStackException();
+    }
+
+    SinglyLinkedNode<T> nodeToPop = head.getNext();
+    head.setNext(nodeToPop.getNext());
+    size--;
+    return nodeToPop.getData();
+  }
+
+  /**
+   * Returns size of linked list
+   *
+   * @return
+   */
+  public int size() {
+    return size;
+  }
+
+  /**
+   * Returns the list head, {@link SinglyLinkedNode}, to allow iteration
+   *
+   * @return
+   */
+  public SinglyLinkedNode<T> getIterator() {
+    return head;
   }
 }
