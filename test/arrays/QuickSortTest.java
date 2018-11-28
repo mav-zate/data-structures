@@ -13,7 +13,8 @@ public class QuickSortTest {
   @BeforeEach
   void init() {
     quickSort = new QuickSort<>();
-    inputArray = ArrayUtils.initUnsortedArray(10);
+//    inputArray = ArrayUtils.initUnsortedArray(10);
+    inputArray = new DynamicArray<>( 3, 7, 9, 10, 6, 8, 4, 1, 2, 5);
   }
 
   @Test

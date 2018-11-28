@@ -14,7 +14,7 @@ public interface Sorter<T extends Comparable<T>> {
    * @param sortable item to be sorted
    * @param comparator function that determines sort order
    */
-  default void sort(CustomArray<T> sortable, SortComparison<T, Boolean> comparator) {
+  default void sort(CustomArray<T> sortable, SortComparison<T, Integer> comparator) {
     return;
   }
 
@@ -25,7 +25,7 @@ public interface Sorter<T extends Comparable<T>> {
    * @param sortable
    * @return
    */
-  default CustomArray<T> sort(SortComparison<T, Boolean> comparator, CustomArray<T> sortable) {
+  default CustomArray<T> sort(SortComparison<T, Integer> comparator, CustomArray<T> sortable) {
     return sortable;
   }
 }

@@ -18,7 +18,7 @@ public class BubbleSort<T extends Comparable<T>> implements Sorter<T> {
   }
 
   @Override
-  public void sort(CustomArray<T> array, SortComparison<T, Boolean> comparator) {
+  public void sort(CustomArray<T> array, SortComparison<T, Integer> comparator) {
     boolean notSorted = true;
 
     int length = array.size();
@@ -28,7 +28,7 @@ public class BubbleSort<T extends Comparable<T>> implements Sorter<T> {
       for (int idx = 0; idx < length - 1; idx++) {
         T left = array.get(idx);
         T right = array.get(idx + 1);
-        if (comparator.isSwap(left, right)) {
+        if (comparator.compare(left, right) > 0) {
           array.set(idx, right);
           array.set(idx + 1, left);
           noSwap = false;

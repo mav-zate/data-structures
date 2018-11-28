@@ -6,7 +6,7 @@ import comparison.SortComparison;
 public class MergeSort<T extends Comparable<T>> implements Sorter<T> {
 
   @Override
-  public CustomArray<T> sort(SortComparison<T, Boolean> comparator, CustomArray<T> sortable) {
+  public CustomArray<T> sort(SortComparison<T, Integer> comparator, CustomArray<T> sortable) {
     if (sortable.size() < 2) {
       return sortable;
     }
@@ -15,10 +15,11 @@ public class MergeSort<T extends Comparable<T>> implements Sorter<T> {
     CustomArray<T> leftArray = sort(comparator, sortable.slice(0, mid));
     CustomArray<T> rightArray = sort(comparator, sortable.slice(mid, sortable.size()));
 
-    return merge(leftArray, rightArray);
+    return merge(leftArray, rightArray, comparator);
   }
 
-  private CustomArray<T> merge(CustomArray<T> leftArray, CustomArray<T> rightArray) {
+  private CustomArray<T> merge(CustomArray<T> leftArray, CustomArray<T> rightArray,
+                               SortComparison<T, Integer> comparator) {
     CustomArray<T> mergedArray = null;
 
     try {
@@ -31,7 +32,7 @@ public class MergeSort<T extends Comparable<T>> implements Sorter<T> {
         T leftElement = leftArray.get(leftIdx);
         T rightElement = rightArray.get(rightIdx);
 
-        if (leftElement.compareTo(rightElement) < 1) {
+        if (comparator.compare(leftElement, rightElement)< 1) {
           mergedArray.add(leftElement);
           leftIdx++;
         } else {
