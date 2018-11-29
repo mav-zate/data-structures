@@ -5,6 +5,7 @@ import arrays.DynamicArray;
 import hashtables.CustomHashTable;
 import linkedlists.SinglyLinkedList;
 import nodes.SinglyLinkedNode;
+import stacksqueues.Queue;
 
 /**
  * Graph that allows for both directional/undirectional edges
@@ -17,6 +18,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
   private CustomArray<T> nodes;
   private CustomHashTable<T, Integer> nodeToIndex;
   private CustomArray<SinglyLinkedList<Integer>> adjacencyList;
+  private CustomHashTable<T, CustomArray<CustomArray<Integer>>> distancesFromNode;
 
   public AdjacencyListGraph(CustomArray<T> nodes, CustomArray<Edge> edges) {
     if (!verifyNodes(nodes)) {
@@ -31,20 +33,116 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     this.nodes = nodes;
     initNodeToKey();
     initAdjacencyList(edges);
+    this.distancesFromNode = new CustomHashTable<>();
   }
 
+  /**
+   *
+   *
+   * @param start
+   * @param destination
+   * @return
+   */
   @Override
-  public CustomArray<T> getShortestPath(T start, T destination) {
-    // TODO: write method (BFS)
-    return null;
+  public SinglyLinkedList<T> getShortestPath(T start, T destination) {
+    if (nodeToIndex.get(start) == null || nodeToIndex.get(destination) == null) {
+      throw new NullPointerException("Graph must contain both start and destination nodes");
+    }
+
+    if (distancesFromNode.get(start) == null) {
+      CustomArray<CustomArray<Integer>> distancesAndPathsToNode = initDistancesAndPathsToNode(nodeToIndex.get(start));
+      boolean[] visitedNodes = new boolean[nodes.size()];
+
+      Queue<Integer> queue = new Queue<>();
+      queue.enqueue(nodeToIndex.get(start));
+      while (queue.size() > 0) {
+        Integer currentNodeIndex = queue.dequeue();
+
+        if (!visitedNodes[currentNodeIndex]) {
+          SinglyLinkedNode<Integer> adjacentNode = adjacencyList.get(currentNodeIndex).getIterator();
+          while (adjacentNode.hasNext()) {
+            adjacentNode = adjacentNode.getNext();
+
+            Integer adjacentNodeIndex = adjacentNode.getData();
+            changeNodeShortestDistanceFromStart(currentNodeIndex, adjacentNodeIndex, distancesAndPathsToNode);
+
+            if (!visitedNodes[adjacentNodeIndex]) {
+              queue.enqueue(adjacentNodeIndex);
+            }
+          }
+
+          visitedNodes[currentNodeIndex] = true;
+        }
+      }
+
+      distancesFromNode.put(start, distancesAndPathsToNode);
+    }
+
+    return constructPathFromDistanceTable(start, destination);
   }
 
+  private void changeNodeShortestDistanceFromStart(Integer currentNodeIndex, Integer adjacentNodeIndex,
+                                                   CustomArray<CustomArray<Integer>> distancesAndPathsToNode) {
+    Integer currentNodeDistance = distancesAndPathsToNode.get(currentNodeIndex).get(0);
+    CustomArray<Integer> adjacentNodeDistancePathPair = distancesAndPathsToNode.get(adjacentNodeIndex);
+    if (adjacentNodeDistancePathPair.get(0) > currentNodeDistance + 1) {
+      adjacentNodeDistancePathPair.set(0, currentNodeDistance + 1);
+      adjacentNodeDistancePathPair.set(1, currentNodeIndex);
+    }
+  }
+
+  private CustomArray<CustomArray<Integer>> initDistancesAndPathsToNode(Integer nodeIndex) {
+    CustomArray<CustomArray<Integer>> distancesAndPathsToNode = new DynamicArray<>();
+
+    for (int i = nodes.size() - 1; i >= 0; i--) {
+      CustomArray<Integer> distanceAndPath = new DynamicArray<>();
+      if (i == nodeIndex) {
+        distanceAndPath.add(0);
+      } else {
+        distanceAndPath.add(Integer.MAX_VALUE);
+      }
+      distanceAndPath.add(-1);
+      distancesAndPathsToNode.add(distanceAndPath);
+    }
+
+    return distancesAndPathsToNode;
+  }
+
+  private SinglyLinkedList<T> constructPathFromDistanceTable(T start, T destination) {
+    SinglyLinkedList<T> path = new SinglyLinkedList<T>();
+    path.insert(destination);
+
+    CustomArray<CustomArray<Integer>> distancesAndPaths = distancesFromNode.get(start);
+    CustomArray<Integer> distanceAndPathForNode = distancesAndPaths.get(nodeToIndex.get(destination));
+    Integer nodeIndex;
+    while ((nodeIndex = distanceAndPathForNode.get(1)) != null) {
+      T node = nodes.get(nodeIndex);
+      path.insert(node);
+
+      distanceAndPathForNode = distancesAndPaths.get(nodeIndex);
+    }
+
+    return path;
+  }
+
+  /**
+   *
+   * @param start
+   * @param destination
+   * @return
+   */
   @Override
   public boolean doesPathExist(T start, T destination) {
     // TODO: write method (DFS)
     return true;
   }
 
+  /**
+   *
+   *
+   * @param newNode
+   * @param adjacentNodes
+   */
   @Override
   public void addNode(T newNode, CustomArray<T> adjacentNodes) {
     if (contains(newNode)) {
@@ -66,6 +164,11 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
   }
 
+  /**
+   *
+   *
+   * @param edges
+   */
   @Override
   public void addEdges(CustomArray<Edge> edges) {
     for (int i = edges.size() - 1; i > -1; i--) {
@@ -82,6 +185,12 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
   }
 
+  /**
+   *
+   *
+   * @param node
+   * @return
+   */
   @Override
   public CustomArray<T> getAdjacentNodes(T node) {
     Integer nodeIndex = nodeToIndex.get(node);
