@@ -13,11 +13,11 @@ public class CustomHashTable<K, V> {
   private int size;
   private int capacity;
 
-  CustomHashTable() {
+  public CustomHashTable() {
     this(11);
   }
 
-  CustomHashTable(int capacity) {
+  public CustomHashTable(int capacity) {
     size = 0;
     this.capacity = capacity;
     table = new Entry[capacity];
