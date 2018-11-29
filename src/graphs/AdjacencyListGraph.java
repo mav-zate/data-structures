@@ -19,6 +19,11 @@ public class AdjacencyListGraph<T> implements Graph<T> {
   private CustomArray<SinglyLinkedList<Integer>> adjacencyList;
 
   public AdjacencyListGraph(CustomArray<T> nodes, CustomArray<Edge> edges) {
+    if (!verifyNodes(nodes)) {
+      throw new IllegalArgumentException("Nodes cannot be null or empty");
+    } else if (hasDuplicates(nodes)) {
+      throw new IllegalArgumentException("Graph cannot contain duplicate nodes");
+    }
     if (!verifyEdges(edges)) {
       throw new IllegalArgumentException("Edges cannot connect nodes not in graph");
     }
@@ -102,6 +107,28 @@ public class AdjacencyListGraph<T> implements Graph<T> {
       if (node.equals(nodes.get(i))) {
         return true;
       }
+    }
+
+    return false;
+  }
+
+  private boolean verifyNodes(CustomArray<T> nodes) {
+    if (nodes == null || nodes.size() < 1) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private boolean hasDuplicates(CustomArray<T> nodes) {
+    CustomHashTable<T, Boolean> seenNodes = new CustomHashTable<>();
+
+    for (int i = nodes.size() - 1; i >= 0; i--) {
+      T currentNode = nodes.get(i);
+      if (seenNodes.get(currentNode) != null) {
+        return true;
+      }
+      seenNodes.put(currentNode, true);
     }
 
     return false;
