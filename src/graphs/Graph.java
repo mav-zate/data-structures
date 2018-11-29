@@ -1,9 +1,10 @@
 package graphs;
 
 import arrays.CustomArray;
+import linkedlists.SinglyLinkedList;
 
 public interface Graph<T> {
-  CustomArray<T> getShortestPath(T start, T destination);
+  SinglyLinkedList<T> getShortestPath(T start, T destination);
 
   boolean doesPathExist(T start, T destination);
 
