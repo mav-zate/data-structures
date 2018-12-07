@@ -3,6 +3,7 @@ package graphs;
 
 import arrays.CustomArray;
 import arrays.DynamicArray;
+import linkedlists.SinglyLinkedList;
 import org.junit.jupiter.api.*;
 
 public class AdjacencyListGraphTest {
@@ -80,6 +81,18 @@ public class AdjacencyListGraphTest {
       );
 
       graph = new AdjacencyListGraph<>(nodes, edges);
+    }
+
+
+    @Test
+    @DisplayName("::getShortestPath")
+    void testGetShortestPath() {
+      SinglyLinkedList expectedShortPath = new SinglyLinkedList();
+      expectedShortPath.insert("F");
+      expectedShortPath.insert("D");
+      expectedShortPath.insert("A");
+
+      Assertions.assertEquals(expectedShortPath, graph.getShortestPath("A", "F"));
     }
   }
 }
