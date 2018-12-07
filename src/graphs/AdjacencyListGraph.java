@@ -153,6 +153,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     adjacencyList.add(new SinglyLinkedList<>());
 
     int newNodeIndex = nodes.size() - 1;
+    nodeToIndex.put(newNode, newNodeIndex);
     for (int i = adjacentNodes.size() - 1; i > -1; i--) {
       Integer currentNodeIndex = nodeToIndex.get(adjacentNodes.get(i));
 

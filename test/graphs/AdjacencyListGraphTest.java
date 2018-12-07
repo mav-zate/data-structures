@@ -32,9 +32,9 @@ public class AdjacencyListGraphTest {
       graph.addNode("B", adjacentNodes);
 
       Assertions.assertAll(
-          () -> Assertions.assertEquals("B", graph.getAdjacentNodes("A").get(0)),
-          () -> Assertions.assertEquals(1, graph.getAdjacentNodes("A").size()),
-          () -> Assertions.assertEquals(0, graph.getAdjacentNodes("B").size())
+          () -> Assertions.assertEquals("A", graph.getAdjacentNodes("B").get(0)),
+          () -> Assertions.assertEquals(0, graph.getAdjacentNodes("A").size()),
+          () -> Assertions.assertEquals(1, graph.getAdjacentNodes("B").size())
       );
     }
 
