@@ -26,7 +26,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     } else if (hasDuplicates(nodes)) {
       throw new IllegalArgumentException("Graph cannot contain duplicate nodes");
     }
-    if (!verifyEdges(edges)) {
+    if (!verifyEdges(edges, nodes.size())) {
       throw new IllegalArgumentException("Edges cannot connect nodes not in graph");
     }
 
@@ -243,21 +243,24 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     return false;
   }
 
-  private boolean verifyEdges(CustomArray<Edge> edges) {
-    int lastIndex = nodes.size() - 1;
-      for (int i = lastIndex; i > -1; i--) {
-        Edge currentEdge = edges.get(i);
-        int start = currentEdge.getStart();
-        int end = currentEdge.getEnd();
-        if (start > lastIndex || start < 0 || end > lastIndex || end < 0) {
-          return false;
-        }
+  private boolean verifyEdges(CustomArray<Edge> edges, int nodeSize) {
+    int lastNodeIndex = nodeSize - 1;
+
+    for (int i = edges.size() - 1; i > -1; i--) {
+      Edge currentEdge = edges.get(i);
+      int start = currentEdge.getStart();
+      int end = currentEdge.getEnd();
+      if (start > lastNodeIndex || start < 0 || end > lastNodeIndex || end < 0) {
+        return false;
       }
+    }
 
     return true;
   }
 
   private void initNodeToKey() {
+    nodeToIndex = new CustomHashTable<>();
+
     for (int i = 0; i < nodes.size(); i++) {
       nodeToIndex.put(nodes.get(i), i);
     }
