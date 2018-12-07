@@ -94,7 +94,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
   private CustomArray<CustomArray<Integer>> initDistancesAndPathsToNode(Integer nodeIndex) {
     CustomArray<CustomArray<Integer>> distancesAndPathsToNode = new DynamicArray<>();
 
-    for (int i = nodes.size() - 1; i >= 0; i--) {
+    for (int i = 0; i < nodes.size(); i++) {
       CustomArray<Integer> distanceAndPath = new DynamicArray<>();
       if (i == nodeIndex) {
         distanceAndPath.add(0);
@@ -109,13 +109,13 @@ public class AdjacencyListGraph<T> implements Graph<T> {
   }
 
   private SinglyLinkedList<T> constructPathFromDistanceTable(T start, T destination) {
-    SinglyLinkedList<T> path = new SinglyLinkedList<T>();
+    SinglyLinkedList<T> path = new SinglyLinkedList<>();
     path.insert(destination);
 
     CustomArray<CustomArray<Integer>> distancesAndPaths = distancesFromNode.get(start);
     CustomArray<Integer> distanceAndPathForNode = distancesAndPaths.get(nodeToIndex.get(destination));
     Integer nodeIndex;
-    while ((nodeIndex = distanceAndPathForNode.get(1)) != null) {
+    while ((nodeIndex = distanceAndPathForNode.get(1)) != -1) {
       T node = nodes.get(nodeIndex);
       path.insert(node);
 
