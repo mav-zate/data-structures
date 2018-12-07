@@ -150,4 +150,46 @@ public class SinglyLinkedList<T> {
   public SinglyLinkedNode<T> getIterator() {
     return head;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("SinglyLinkedList: [");
+    SinglyLinkedNode currentNode = head;
+    while (currentNode.hasNext()) {
+      currentNode = currentNode.getNext();
+      sb.append(currentNode + ", ");
+    }
+    sb.delete(sb.length() - 2, sb.length());
+    sb.append("]");
+
+    return sb.toString();
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public boolean equals(Object obj) {
+    if (obj == null || obj.getClass() != getClass()) {
+      return false;
+    }
+
+    SinglyLinkedList<T> other = (SinglyLinkedList<T>) obj;
+
+    if (size() != other.size()) {
+      return false;
+    }
+
+    SinglyLinkedNode thisNode = getIterator();
+    SinglyLinkedNode thatNode = other.getIterator();
+    while (thisNode.hasNext() && thatNode.hasNext()) {
+      thisNode = thisNode.getNext();
+      thatNode = thatNode.getNext();
+
+      if (!(thisNode.equals(thatNode))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
