@@ -6,6 +6,7 @@ import hashtables.CustomHashTable;
 import linkedlists.SinglyLinkedList;
 import nodes.SinglyLinkedNode;
 import stacksqueues.Queue;
+import stacksqueues.Stack;
 
 /**
  * Graph that allows for both directional/undirectional edges
@@ -133,8 +134,39 @@ public class AdjacencyListGraph<T> implements Graph<T> {
    */
   @Override
   public boolean doesPathExist(T start, T destination) {
-    // TODO: write method (DFS)
-    return true;
+    if (nodeToIndex.get(start) == null || nodeToIndex.get(destination) == null) {
+      return false;
+    }
+
+    boolean[] visited = new boolean[nodes.size()];
+    Stack<Integer> path = new Stack<>();
+    path.push(nodeToIndex.get(start));
+    while (path.size() > 0) {
+      Integer currentNodeIdx = path.peek();
+      visited[currentNodeIdx] = true;
+
+      if (currentNodeIdx.equals(nodeToIndex.get(destination))) {
+        return true;
+      }
+
+      SinglyLinkedNode<Integer> adjacentNodes = adjacencyList.get(currentNodeIdx).getIterator();
+      boolean hasUnvisitedNode = false;
+      while (adjacentNodes.hasNext() && !hasUnvisitedNode) {
+        adjacentNodes = adjacentNodes.getNext();
+        Integer adjacentNodeIdx = adjacentNodes.getData();
+
+        if (!visited[adjacentNodeIdx]) {
+          path.push(adjacentNodeIdx);
+          hasUnvisitedNode = true;
+        }
+      }
+
+      if (!hasUnvisitedNode) {
+        path.pop();
+      }
+    }
+
+    return false;
   }
 
   /**

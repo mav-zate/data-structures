@@ -62,13 +62,14 @@ public class AdjacencyListGraphTest {
             \     \ /
               - -  F
 
+              G
    */
   @Nested
   @DisplayName("Undirected graph")
   class UndirectedGraph {
     @BeforeEach
     void init() {
-      CustomArray<String> nodes = new DynamicArray<>("A", "B", "C", "D", "E", "F");
+      CustomArray<String> nodes = new DynamicArray<>("A", "B", "C", "D", "E", "F", "G");
 
       CustomArray<Edge> edges = new DynamicArray<>(
           new Edge(0, 1), new Edge(1, 0), // A - B
@@ -93,6 +94,21 @@ public class AdjacencyListGraphTest {
       expectedShortPath.insert("A");
 
       Assertions.assertEquals(expectedShortPath, graph.getShortestPath("A", "F"));
+    }
+
+    @Test
+    @DisplayName("::doesPathExist")
+    void testDoesPathExist() {
+      Assertions.assertAll(
+          () -> Assertions.assertTrue(graph.doesPathExist("A", "B")),
+          () -> Assertions.assertTrue(graph.doesPathExist("A", "C")),
+          () -> Assertions.assertTrue(graph.doesPathExist("A", "D")),
+          () -> Assertions.assertTrue(graph.doesPathExist("A", "E")),
+          () -> Assertions.assertTrue(graph.doesPathExist("A", "F")),
+
+          () -> Assertions.assertFalse(graph.doesPathExist("A", "G")),
+          () -> Assertions.assertFalse(graph.doesPathExist("A", "H"))
+      );
     }
   }
 }
